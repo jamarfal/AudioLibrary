@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 
@@ -17,7 +16,7 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.io.IOException;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;

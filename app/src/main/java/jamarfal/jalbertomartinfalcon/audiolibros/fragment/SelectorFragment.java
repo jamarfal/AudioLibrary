@@ -9,26 +9,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 import java.util.Vector;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.AdaptadorLibros;
-import jamarfal.jalbertomartinfalcon.audiolibros.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
@@ -151,6 +148,37 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_selector, menu);
+        MenuItem searchItem = menu.findItem(R.id.menu_buscar);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(
+                new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextChange(String query) {
+                        adaptador.setBusqueda(query);
+                        adaptador.notifyDataSetChanged();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        return false;
+                    }
+                });
+
+        // Resetea la busqueda
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                adaptador.setBusqueda("");
+                adaptador.notifyDataSetChanged();
+                return true; // Para permitir cierre
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true; // Para permitir expansión
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 

@@ -1,8 +1,7 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +14,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 
 import java.util.Vector;
+
+import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.R;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
 
 /**
  * Created by jamarfal on 19/12/16.

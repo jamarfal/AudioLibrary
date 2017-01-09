@@ -1,8 +1,10 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.adapter;
 
 import android.content.Context;
 
 import java.util.Vector;
+
+import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 
 /**
  * Created by jamarfal on 20/12/16.
