@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<set xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shareInterpolator="true">
-    <scale
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
         android:duration="500"
-        android:fromXScale="1.0"
-        android:fromYScale="1.0"
-        android:interpolator="@android:anim/decelerate_interpolator"
-        android:pivotX="50%"
-        android:pivotY="50%"
-        android:toXScale="0.0"
-        android:toYScale="0.0" />
+        android:propertyName="scaleX"
+        android:valueTo="0"
+        android:valueType="floatType" />
+    <objectAnimator
+        android:duration="500"
+        android:propertyName="scaleY"
+        android:valueTo="0"
+        android:valueType="floatType" />
 </set>
