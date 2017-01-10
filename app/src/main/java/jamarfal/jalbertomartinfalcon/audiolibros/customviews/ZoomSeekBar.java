@@ -279,6 +279,7 @@ public class ZoomSeekBar extends View { // Valor a controlar
 
     public void setEscalaMin(int escalaMin) {
         this.escalaMin = escalaMin;
+        invalidate(escalaRect);
     }
 
     public int getEscalaMax() {
@@ -287,6 +288,8 @@ public class ZoomSeekBar extends View { // Valor a controlar
 
     public void setEscalaMax(int escalaMax) {
         this.escalaMax = escalaMax;
+        invalidate(escalaRect);
+
     }
 
     public int getEscalaIni() {
@@ -303,6 +306,7 @@ public class ZoomSeekBar extends View { // Valor a controlar
 
     public void setEscalaRaya(int escalaRaya) {
         this.escalaRaya = escalaRaya;
+        invalidate(escalaRect);
     }
 
     public int getEscalaRayaLarga() {
@@ -311,6 +315,7 @@ public class ZoomSeekBar extends View { // Valor a controlar
 
     public void setEscalaRayaLarga(int escalaRayaLarga) {
         this.escalaRayaLarga = escalaRayaLarga;
+        invalidate(escalaRect);
     }
 
     public void setOnSeekBarValueChangeListener(SeekBarValueChangeListener seekBarValueChangeListener) {
