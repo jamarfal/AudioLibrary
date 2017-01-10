@@ -20,6 +20,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
+import jamarfal.jalbertomartinfalcon.audiolibros.customviews.ZoomSeekBar;
 
 /**
  * Created by jamarfal on 19/12/16.
@@ -30,6 +31,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     public static String ARG_ID_LIBRO = "id_libro";
     MediaPlayer mediaPlayer;
     MediaController mediaController;
+    ZoomSeekBar zoomSeekBar;
 
     @Override
     public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
         ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(
                 libro.urlImagen, Aplicacion.getLectorImagenes());
+        zoomSeekBar = (ZoomSeekBar) vista.findViewById(R.id.zoomseekbar);
 
 
         vista.setOnTouchListener(this);

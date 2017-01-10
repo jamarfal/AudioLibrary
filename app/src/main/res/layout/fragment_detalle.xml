@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:padding="@dimen/activity_vertical_margin">
 
     <RelativeLayout
         android:id="@+id/fragment_detalle"
@@ -15,26 +16,34 @@
         android:background="#ffffff"
         tools:context=".MainActivity">
 
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            class="jamarfal.jalbertomartinfalcon.audiolibros.customviews.ZoomSeekBar"
+            android:id="@+id/zoomseekbar"
+            android:layout_centerHorizontal="true" />
+
+
         <TextView
             android:id="@+id/titulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/zoomseekbar"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Título"
             android:textAlignment="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/black" />
 
+
         <TextView
             android:id="@+id/autor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_below="@+id/titulo"
+            android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Autor"
             android:textAlignment="center"
@@ -48,5 +57,9 @@
             android:layout_below="@id/autor"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter" />
+
+
+
+
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>
