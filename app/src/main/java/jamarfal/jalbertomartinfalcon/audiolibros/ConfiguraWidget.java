@@ -46,7 +46,7 @@ public class ConfiguraWidget extends AppCompatActivity {
         editor.apply();
 
 
-
+        MiAppWidgetProvider.actualizaWidget(this, widgetId);
 
         Intent resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);

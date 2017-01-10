@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="Refresh"
-        android:background="@android:drawable/ic_media_play"/>
+        android:src="@android:drawable/ic_media_play"/>
 
     <TextView
         android:id="@+id/lblTitulo"

@@ -8,7 +8,7 @@
         android:id="@+id/radioButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ocultar botón Play" />
+        android:text="Cambiar icono de Play por Estrella" />
 
     <Button
         android:id="@+id/buttonOK"
