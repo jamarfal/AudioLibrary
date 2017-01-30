@@ -39,12 +39,7 @@ public class ConfiguraWidget extends AppCompatActivity {
     }
 
     public void buttonOK(View view) {
-        SharedPreferences prefs = getSharedPreferences("cambiarImagen",
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("cambiarImagen" + widgetId, radioButton.isChecked());
-        editor.apply();
-
+        LibroSharedPreferenceStorage.getInstance(this).setChangeWidgetImage(widgetId, radioButton.isChecked());
 
         MiAppWidgetProvider.actualizaWidget(this, widgetId);
 

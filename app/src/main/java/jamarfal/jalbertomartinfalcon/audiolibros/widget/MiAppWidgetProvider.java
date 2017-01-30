@@ -11,6 +11,7 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.LibroSharedPreferenceStorage;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
@@ -54,9 +55,8 @@ public class MiAppWidgetProvider extends AppWidgetProvider {
     }
 
     public static void actualizaWidget(Context context, int widgetId) {
-        SharedPreferences pref = context.getSharedPreferences(
-                "com.example.audiolibros_internal", MODE_PRIVATE);
-        int id = pref.getInt("ultimo", -1);
+
+        int id = LibroSharedPreferenceStorage.getInstance(context).getLastBook();
         libro = ((AudioLibraryApplication) context.getApplicationContext())
                 .getVectorLibros().elementAt(id);
 
@@ -64,9 +64,9 @@ public class MiAppWidgetProvider extends AppWidgetProvider {
         remoteViews.setTextViewText(R.id.lblAutor, "Autor: " + libro.autor);
         remoteViews.setTextViewText(R.id.lblTitulo, "Titulo: " + libro.titulo);
 
-        SharedPreferences prefs = context.getSharedPreferences("cambiarImagen", MODE_PRIVATE);
-        boolean cambiarImagen = prefs.getBoolean("cambiarImagen" + widgetId, false);
-        if (cambiarImagen) {
+
+        boolean shouldChangeWidgetImage = LibroSharedPreferenceStorage.getInstance(context).shouldChangeWidgetImage();
+        if (shouldChangeWidgetImage) {
             remoteViews.setImageViewResource(R.id.actionButton, R.drawable.estrella);
 
         }

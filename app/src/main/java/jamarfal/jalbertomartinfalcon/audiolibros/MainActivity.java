@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -18,8 +18,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -182,9 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void irUltimoVisitado() {
-        SharedPreferences pref = getSharedPreferences(
-                "com.example.audiolibros_internal", MODE_PRIVATE);
-        int id = pref.getInt("ultimo", -1);
+        int id = LibroSharedPreferenceStorage.getInstance(this).getLastBook();
         if (id >= 0) {
             mostrarDetalle(id);
         } else {
@@ -209,10 +205,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             transaccion.commit();
         }
 
-        SharedPreferences pref = getSharedPreferences("com.example.audiolibros_internal", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("ultimo", id);
-        editor.apply();
+
+        LibroSharedPreferenceStorage.getInstance(this).saveLastBook(id);
     }
 
     public void mostrarElementos(boolean mostrar) {

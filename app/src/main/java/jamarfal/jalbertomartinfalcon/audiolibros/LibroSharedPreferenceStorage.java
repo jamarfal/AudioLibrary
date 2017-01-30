@@ -12,6 +12,7 @@ public class LibroSharedPreferenceStorage implements LibroStorage {
     public static final String PREF_AUDIOLIBRARY = "com.example.audiolibros_internal";
     public static final String KEY_LAST_BOOK = "ultimo";
     public static final String KEY_AUTOPLAY = "pref_autoreproducir";
+    public static final String KEY_CHANGE_WIDGET_IMAGE = "cambiarImagen";
     private final Context context;
     private static LibroSharedPreferenceStorage instance;
 
@@ -45,12 +46,23 @@ public class LibroSharedPreferenceStorage implements LibroStorage {
     public void saveLastBook(int id) {
         SharedPreferences pref = getPreference();
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("ultimo", id);
+        editor.putInt(KEY_LAST_BOOK, id);
         editor.apply();
     }
 
     @Override
     public boolean isAutoPlay() {
         return getPreference().getBoolean(KEY_AUTOPLAY, true);
+    }
+
+    public void setChangeWidgetImage(int widgetId, boolean shouldChange) {
+        SharedPreferences pref = getPreference();
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean(KEY_CHANGE_WIDGET_IMAGE + widgetId, shouldChange);
+        editor.apply();
+    }
+
+    public boolean shouldChangeWidgetImage() {
+        return getPreference().getBoolean(KEY_CHANGE_WIDGET_IMAGE, false);
     }
 }
