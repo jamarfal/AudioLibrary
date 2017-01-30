@@ -51,7 +51,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             super(itemView);
             portada = (ImageView) itemView.findViewById(R.id.portada);
             portada.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            titulo = (TextView) itemView.findViewById(R.id.titulo);
+            titulo = (TextView) itemView.findViewById(R.id.lblTitle);
         }
     }
 
@@ -81,7 +81,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             }
         });
 
-        AudioLibraryApplication.getLectorImagenes().get(libro.urlImagen,
+        AudioLibraryApplication.getLectorImagenes().get(libro.imageUrl,
                 new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -118,7 +118,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
                     }
 
                 });
-        holder.titulo.setText(libro.titulo);
+        holder.titulo.setText(libro.title);
         holder.itemView.setScaleX(1);
         holder.itemView.setScaleY(1);
     }

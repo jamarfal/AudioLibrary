@@ -1,16 +1,11 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.fragment;
 
 import android.animation.Animator;
-import android.animation.AnimatorInflater;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,31 +21,31 @@ import java.util.Vector;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.SearchObservable;
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.OpenDetailClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ShowOptionsPopupClickAction;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 
 /**
  * Created by jamarfal on 19/12/16.
  */
 
 public class SelectorFragment extends Fragment implements Animator.AnimatorListener {
-    private Activity actividad;
+    private Activity activity;
     private RecyclerView recyclerView;
-    private AdaptadorLibrosFiltro adaptador;
-    private Vector<Libro> vectorLibros;
+    private AdaptadorLibrosFiltro adapter;
+    private Vector<Libro> vectorBooks;
 
     @Override
     public void onAttach(Context contexto) {
         super.onAttach(contexto);
         if (contexto instanceof Activity) {
-            this.actividad = (Activity) contexto;
-            AudioLibraryApplication app = (AudioLibraryApplication) actividad.getApplication();
-            adaptador = app.getAdaptador();
-            vectorLibros = app.getVectorLibros();
+            this.activity = (Activity) contexto;
+            BooksSingleton booksSingleton = BooksSingleton.getInstance(contexto);
+            adapter = booksSingleton.getAdapter();
+            vectorBooks = booksSingleton.getVectorBooks();
         }
     }
 
@@ -64,8 +59,8 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
     public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
         View vista = inflador.inflate(R.layout.fragment_selector, contenedor, false);
         recyclerView = (RecyclerView) vista.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(actividad, 2));
-        recyclerView.setAdapter(adaptador);
+        recyclerView.setLayoutManager(new GridLayoutManager(activity, 2));
+        recyclerView.setAdapter(adapter);
 
 
         DefaultItemAnimator animator = new DefaultItemAnimator();
@@ -73,8 +68,8 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
         animator.setMoveDuration(2000);
         recyclerView.setItemAnimator(animator);
 
-        adaptador.setClickAction(new OpenDetailClickAction((MainActivity) getActivity()));
-        adaptador.setLongClickAction(new ShowOptionsPopupClickAction((MainActivity) getActivity(), recyclerView));
+        adapter.setClickAction(new OpenDetailClickAction((MainActivity) getActivity()));
+        adapter.setLongClickAction(new ShowOptionsPopupClickAction((MainActivity) getActivity(), recyclerView));
 
 
         setHasOptionsMenu(true);
@@ -88,15 +83,15 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
         MenuItem searchItem = menu.findItem(R.id.menu_buscar);
         SearchView searchView = (SearchView) searchItem.getActionView();
         SearchObservable searchObservable = new SearchObservable();
-        searchObservable.addObserver(adaptador);
+        searchObservable.addObserver(adapter);
         searchView.setOnQueryTextListener(searchObservable);
 
         // Resetea la busqueda
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                adaptador.setBusqueda("");
-                adaptador.notifyDataSetChanged();
+                adapter.setBusqueda("");
+                adapter.notifyDataSetChanged();
                 return true; // Para permitir cierre
             }
 
@@ -112,7 +107,7 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.menu_ultimo) {
-            ((MainActivity) actividad).irUltimoVisitado();
+            ((MainActivity) activity).irUltimoVisitado();
             return true;
         } else if (id == R.id.menu_buscar) {
             return true;
@@ -127,7 +122,7 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
 
     @Override
     public void onAnimationEnd(Animator animator) {
-        adaptador.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

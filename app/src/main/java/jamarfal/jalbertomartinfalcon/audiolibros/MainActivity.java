@@ -29,6 +29,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
 import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener {
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        adaptador = ((AudioLibraryApplication) getApplicationContext()).getAdaptador();
+        adaptador = BooksSingleton.getInstance(this).getAdapter();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -130,13 +131,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             adaptador.setGenero("");
             adaptador.notifyDataSetChanged();
         } else if (id == R.id.nav_epico) {
-            adaptador.setGenero(Libro.G_EPICO);
+            adaptador.setGenero(Libro.FILTER_EPIC);
             adaptador.notifyDataSetChanged();
         } else if (id == R.id.nav_XIX) {
-            adaptador.setGenero(Libro.G_S_XIX);
+            adaptador.setGenero(Libro.FILTER_S_XIX);
             adaptador.notifyDataSetChanged();
         } else if (id == R.id.nav_suspense) {
-            adaptador.setGenero(Libro.G_SUSPENSE);
+            adaptador.setGenero(Libro.FILTER_THRILLER);
             adaptador.notifyDataSetChanged();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(
@@ -236,11 +237,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         anim.addListener(MainActivity.this);
                         anim.setTarget(v);
                         anim.start();
-                        Libro libro = ((AudioLibraryApplication) MainActivity.this.getApplication()).getVectorLibros().elementAt(id);
+                        Libro libro = BooksSingleton.getInstance(MainActivity.this).getVectorBooks().elementAt(id);
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("text/plain");
-                        i.putExtra(Intent.EXTRA_SUBJECT, libro.titulo);
-                        i.putExtra(Intent.EXTRA_TEXT, libro.urlAudio);
+                        i.putExtra(Intent.EXTRA_SUBJECT, libro.title);
+                        i.putExtra(Intent.EXTRA_TEXT, libro.audioUrl);
                         startActivity(Intent.createChooser(i, "Compartir"));
                         break;
                     case 1: // Borrar

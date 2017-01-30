@@ -26,7 +26,7 @@
 
 
         <TextView
-            android:id="@+id/titulo"
+            android:id="@+id/labelTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/zoomseekbar"
@@ -39,10 +39,10 @@
 
 
         <TextView
-            android:id="@+id/autor"
+            android:id="@+id/labelAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/titulo"
+            android:layout_below="@+id/labelTitle"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="Autor"
@@ -54,7 +54,7 @@
             android:id="@+id/portada"
             android:layout_width="220dp"
             android:layout_height="220dp"
-            android:layout_below="@id/autor"
+            android:layout_below="@id/labelAuthor"
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter" />
 

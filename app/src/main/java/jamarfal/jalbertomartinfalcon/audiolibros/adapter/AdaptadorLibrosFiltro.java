@@ -52,11 +52,11 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
         indiceFiltro = new Vector<Integer>();
         for (int i = 0; i < vectorSinFiltro.size(); i++) {
             Libro libro = vectorSinFiltro.elementAt(i);
-            if ((libro.titulo.toLowerCase().contains(busqueda) ||
-                    libro.autor.toLowerCase().contains(busqueda))
-                    && (libro.genero.startsWith(genero))
-                    && (!novedad || (novedad && libro.novedad))
-                    && (!leido || (leido && libro.leido))) {
+            if ((libro.title.toLowerCase().contains(busqueda) ||
+                    libro.author.toLowerCase().contains(busqueda))
+                    && (libro.genre.startsWith(genero))
+                    && (!novedad || (novedad && libro.isNew))
+                    && (!leido || (leido && libro.isRead))) {
                 vectorLibros.add(libro);
                 indiceFiltro.add(i);
             }

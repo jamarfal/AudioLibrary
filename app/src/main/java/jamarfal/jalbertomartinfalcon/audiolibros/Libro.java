@@ -8,33 +8,33 @@ import java.util.Vector;
 
 public class Libro {
 
-    public String titulo;
-    public String autor;
-    public String urlImagen;
-    public String urlAudio;
-    public String genero; // Género literario
-    public Boolean novedad; // Es una novedad
-    public Boolean leido; // Leído por el usuario
-    public final static String G_TODOS = "Todos los géneros";
-    public final static String G_EPICO = "Poema épico";
-    public final static String G_S_XIX = "Literatura siglo XIX";
-    public final static String G_SUSPENSE = "Suspense";
-    public final static String[] G_ARRAY = new String[]{G_TODOS, G_EPICO,
-            G_S_XIX, G_SUSPENSE};
+    public String title;
+    public String author;
+    public String imageUrl;
+    public String audioUrl;
+    public String genre; // Género literario
+    public Boolean isNew; // Es una isNew
+    public Boolean isRead; // Leído por el usuario
+    public final static String FILTER_ALL = "Todos los géneros";
+    public final static String FILTER_EPIC = "Poema épico";
+    public final static String FILTER_S_XIX = "Literatura siglo XIX";
+    public final static String FILTER_THRILLER = "Suspense";
+    public final static String[] FILTERS_ARRAY = new String[]{FILTER_ALL, FILTER_EPIC,
+            FILTER_S_XIX, FILTER_THRILLER};
 
     private int colorVibrante, colorApagado;
 
-    public final static Libro EMPTY_BOOK = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg", "", G_TODOS, true, false);
+    public final static Libro EMPTY_BOOK = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg", "", FILTER_ALL, true, false);
 
-    public Libro(String titulo, String autor, String urlImagen,
-                 String urlAudio, String genero, Boolean novedad, Boolean leido) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.urlImagen = urlImagen;
-        this.urlAudio = urlAudio;
-        this.genero = genero;
-        this.novedad = novedad;
-        this.leido = leido;
+    private Libro(String title, String author, String imageUrl,
+                  String audioUrl, String genre, Boolean isNew, Boolean isRead) {
+        this.title = title;
+        this.author = author;
+        this.imageUrl = imageUrl;
+        this.audioUrl = audioUrl;
+        this.genre = genre;
+        this.isNew = isNew;
+        this.isRead = isRead;
         this.colorApagado = -1;
         this.colorVibrante = -1;
     }
@@ -61,22 +61,80 @@ public class Libro {
         Vector<Libro> libros = new Vector<Libro>();
         libros.add(new Libro("Kappa", "Akutagawa",
                 SERVIDOR + "kappa.jpg", SERVIDOR + "kappa.mp3",
-                Libro.G_S_XIX, false, false));
+                Libro.FILTER_S_XIX, false, false));
         libros.add(new Libro("Avecilla", "Alas Clarín, Leopoldo",
                 SERVIDOR + "avecilla.jpg", SERVIDOR + "avecilla.mp3",
-                Libro.G_S_XIX, true, false));
+                Libro.FILTER_S_XIX, true, false));
         libros.add(new Libro("Divina Comedia", "Dante",
                 SERVIDOR + "divina_comedia.jpg", SERVIDOR + "divina_comedia.mp3",
-                Libro.G_EPICO, true, false));
+                Libro.FILTER_EPIC, true, false));
         libros.add(new Libro("Viejo Pancho, El", "Alonso y Trelles, José",
                 SERVIDOR + "viejo_pancho.jpg", SERVIDOR + "viejo_pancho.mp3",
-                Libro.G_S_XIX, true, true));
+                Libro.FILTER_S_XIX, true, true));
         libros.add(new Libro("Canción de Rolando", "Anónimo",
                 SERVIDOR + "cancion_rolando.jpg", SERVIDOR + "cancion_rolando.mp3",
-                Libro.G_EPICO, false, true));
+                Libro.FILTER_EPIC, false, true));
         libros.add(new Libro("Matrimonio de sabuesos", "Agata Christie",
-                SERVIDOR + "matrim_sabuesos.jpg", SERVIDOR + "matrim_sabuesos.mp3", Libro.G_SUSPENSE, false, true));
-        libros.add(new Libro("La iliada", "Homero", SERVIDOR + "la_iliada.jpg", SERVIDOR + "la_iliada.mp3", Libro.G_EPICO, true, false));
+                SERVIDOR + "matrim_sabuesos.jpg", SERVIDOR + "matrim_sabuesos.mp3", Libro.FILTER_THRILLER, false, true));
+        libros.add(new Libro("La iliada", "Homero", SERVIDOR + "la_iliada.jpg", SERVIDOR + "la_iliada.mp3", Libro.FILTER_EPIC, true, false));
         return libros;
+    }
+
+
+    public static class LibroBuilder {
+        private String title = "";
+        private String author = "anónimo";
+        private String imageUrl =
+                "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg";
+        private String audioUrl = "";
+        private String genre = FILTER_ALL;
+        private boolean isNew = true;
+        private boolean isRead = false;
+
+        public LibroBuilder withTitle(String titulo) {
+            this.title = titulo;
+            return this;
+        }
+
+        public LibroBuilder withAuthor(String autor) {
+            this.author = autor;
+            return this;
+        }
+
+        public LibroBuilder withImageUrl(String urlImagen) {
+            this.imageUrl = urlImagen;
+            return this;
+        }
+
+        public LibroBuilder withAudioUrl(String audioUrl) {
+            this.audioUrl = audioUrl;
+            return this;
+        }
+
+        public LibroBuilder withGenre(String genre) {
+            this.genre = genre;
+            return this;
+        }
+
+        public LibroBuilder withIsRead(boolean isRead) {
+            this.isRead = isRead;
+            return this;
+        }
+
+        public LibroBuilder withIsNew(boolean isNew) {
+            this.isNew = isNew;
+            return this;
+        }
+
+        public Libro build() {
+            return new Libro(
+                    title,
+                    author,
+                    imageUrl,
+                    audioUrl,
+                    genre,
+                    isNew,
+                    isRead);
+        }
     }
 }

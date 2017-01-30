@@ -21,6 +21,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.customviews.ZoomSeekBar;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 
 /**
  * Created by jamarfal on 19/12/16.
@@ -58,13 +59,12 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     }
 
     private void ponInfoLibro(int id, View vista) {
-        Libro libro = ((AudioLibraryApplication) getActivity().getApplication())
-                .getVectorLibros().elementAt(id);
+        Libro libro = BooksSingleton.getInstance(getActivity()).getVectorBooks().elementAt(id);
 
-        ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
-        ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
+        ((TextView) vista.findViewById(R.id.labelTitle)).setText(libro.title);
+        ((TextView) vista.findViewById(R.id.labelAuthor)).setText(libro.author);
         ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(
-                libro.urlImagen, AudioLibraryApplication.getLectorImagenes());
+                libro.imageUrl, AudioLibraryApplication.getLectorImagenes());
         zoomSeekBar = (ZoomSeekBar) vista.findViewById(R.id.zoomseekbar);
 
 
@@ -76,7 +76,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(this);
         mediaController = new MediaController(getActivity());
-        Uri audio = Uri.parse(libro.urlAudio);
+        Uri audio = Uri.parse(libro.audioUrl);
         try {
             mediaPlayer.setDataSource(getActivity(), audio);
             mediaPlayer.prepareAsync();
