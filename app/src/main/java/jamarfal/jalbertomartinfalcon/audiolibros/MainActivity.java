@@ -23,7 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        adaptador = ((Aplicacion) getApplicationContext()).getAdaptador();
+        adaptador = ((AudioLibraryApplication) getApplicationContext()).getAdaptador();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

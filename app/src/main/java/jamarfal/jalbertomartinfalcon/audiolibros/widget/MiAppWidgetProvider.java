@@ -6,20 +6,14 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
-
-import java.io.IOException;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
-import jamarfal.jalbertomartinfalcon.audiolibros.service.ServicioMusica;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -63,7 +57,7 @@ public class MiAppWidgetProvider extends AppWidgetProvider {
         SharedPreferences pref = context.getSharedPreferences(
                 "com.example.audiolibros_internal", MODE_PRIVATE);
         int id = pref.getInt("ultimo", -1);
-        libro = ((Aplicacion) context.getApplicationContext())
+        libro = ((AudioLibraryApplication) context.getApplicationContext())
                 .getVectorLibros().elementAt(id);
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);

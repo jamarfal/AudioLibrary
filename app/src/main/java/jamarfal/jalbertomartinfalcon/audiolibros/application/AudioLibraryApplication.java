@@ -17,7 +17,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
  * Created by jamarfal on 19/12/16.
  */
 
-public class Aplicacion extends Application {
+public class AudioLibraryApplication extends Application {
     private Vector<Libro> vectorLibros;
     private AdaptadorLibrosFiltro adaptador;
     private static RequestQueue colaPeticiones;

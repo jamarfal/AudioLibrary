@@ -25,7 +25,7 @@ import android.view.ViewGroup;
 import java.util.Vector;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
@@ -45,7 +45,7 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
         super.onAttach(contexto);
         if (contexto instanceof Activity) {
             this.actividad = (Activity) contexto;
-            Aplicacion app = (Aplicacion) actividad.getApplication();
+            AudioLibraryApplication app = (AudioLibraryApplication) actividad.getApplication();
             adaptador = app.getAdaptador();
             vectorLibros = app.getVectorLibros();
         }

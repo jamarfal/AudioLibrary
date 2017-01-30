@@ -16,7 +16,7 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.io.IOException;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
@@ -58,13 +58,13 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     }
 
     private void ponInfoLibro(int id, View vista) {
-        Libro libro = ((Aplicacion) getActivity().getApplication())
+        Libro libro = ((AudioLibraryApplication) getActivity().getApplication())
                 .getVectorLibros().elementAt(id);
 
         ((TextView) vista.findViewById(R.id.titulo)).setText(libro.titulo);
         ((TextView) vista.findViewById(R.id.autor)).setText(libro.autor);
         ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(
-                libro.urlImagen, Aplicacion.getLectorImagenes());
+                libro.urlImagen, AudioLibraryApplication.getLectorImagenes());
         zoomSeekBar = (ZoomSeekBar) vista.findViewById(R.id.zoomseekbar);
 
 

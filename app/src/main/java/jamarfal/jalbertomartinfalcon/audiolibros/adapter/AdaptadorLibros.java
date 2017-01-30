@@ -17,7 +17,7 @@ import java.util.Vector;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 
 /**
  * Created by jamarfal on 19/12/16.
@@ -63,7 +63,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int posicion) {
         final Libro libro = vectorLibros.elementAt(posicion);
-        Aplicacion.getLectorImagenes().get(libro.urlImagen,
+        AudioLibraryApplication.getLectorImagenes().get(libro.urlImagen,
                 new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {

@@ -1,15 +1,11 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.service;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 
@@ -18,7 +14,7 @@ import java.io.IOException;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.application.Aplicacion;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 
 /**
  * Created by jamarfal on 6/11/16.
@@ -34,7 +30,7 @@ public class ServicioMusica extends Service implements MediaPlayer.OnPreparedLis
         SharedPreferences pref = getSharedPreferences(
                 "com.example.audiolibros_internal", MODE_PRIVATE);
         int id = pref.getInt("ultimo", -1);
-        Libro libro = ((Aplicacion) getApplication())
+        Libro libro = ((AudioLibraryApplication) getApplication())
                 .getVectorLibros().elementAt(id);
         reproductor = new MediaPlayer();
         reproductor.setOnPreparedListener(this);
