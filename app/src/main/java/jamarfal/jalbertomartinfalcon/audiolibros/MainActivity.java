@@ -1,11 +1,15 @@
 package jamarfal.jalbertomartinfalcon.audiolibros;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +32,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplica
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener {
 
     private AdaptadorLibrosFiltro adaptador;
     private AppBarLayout appBarLayout;
@@ -224,4 +229,85 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    public void showBookActions(final View v, final RecyclerView recyclerView) {
+        final int id = recyclerView.getChildAdapterPosition(v);
+        AlertDialog.Builder menu = new AlertDialog.Builder(this);
+        CharSequence[] opciones = {"Compartir", "Borrar ", "Insertar"};
+        menu.setItems(opciones, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int opcion) {
+                switch (opcion) {
+                    case 0: //Compartir
+                        Animator anim = AnimatorInflater.loadAnimator(MainActivity.this,
+                                R.animator.crecer);
+                        anim.addListener(MainActivity.this);
+                        anim.setTarget(v);
+                        anim.start();
+                        Libro libro = ((AudioLibraryApplication) MainActivity.this.getApplication()).getVectorLibros().elementAt(id);
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("text/plain");
+                        i.putExtra(Intent.EXTRA_SUBJECT, libro.titulo);
+                        i.putExtra(Intent.EXTRA_TEXT, libro.urlAudio);
+                        startActivity(Intent.createChooser(i, "Compartir"));
+                        break;
+                    case 1: // Borrar
+                        Snackbar.make(v, "¿Estás seguro?", Snackbar.LENGTH_LONG)
+                                .setAction("SI", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        //Otra forma de animar
+//                                                Animation anim = AnimationUtils.loadAnimation(actividad,
+//                                                        R.anim.menguar);
+//                                                anim.setAnimationListener(SelectorFragment.this);
+//                                                v.startAnimation(anim);
+//                                                adaptador.borrar(id);
+                                        //adaptador.notifyDataSetChanged();
+
+                                        Animator anim = AnimatorInflater.loadAnimator(MainActivity.this,
+                                                R.animator.menguar);
+                                        anim.addListener(MainActivity.this);
+                                        anim.setTarget(v);
+                                        anim.start();
+                                        adaptador.borrar(id);
+                                    }
+                                }).show();
+                        break;
+
+                    case 2: //Insertar
+                        int posicion = recyclerView.getChildLayoutPosition(v);
+                        adaptador.insertar((Libro) adaptador.getItem(posicion));
+                        adaptador.notifyItemInserted(0);
+                        Snackbar.make(v, "Libro insertado", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("OK", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                    }
+                                })
+                                .show();
+                        break;
+                }
+            }
+        });
+        menu.create().show();
+    }
+
+
+    @Override
+    public void onAnimationStart(Animator animator) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animator) {
+        adaptador.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animator) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animator) {
+
+    }
 }

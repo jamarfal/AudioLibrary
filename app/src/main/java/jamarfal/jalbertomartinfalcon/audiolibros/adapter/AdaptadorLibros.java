@@ -18,6 +18,10 @@ import java.util.Vector;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
+import jamarfal.jalbertomartinfalcon.audiolibros.command.ClickAction;
+import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyClickAction;
+import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyLongClickAction;
+import jamarfal.jalbertomartinfalcon.audiolibros.command.LongClickAction;
 
 /**
  * Created by jamarfal on 19/12/16.
@@ -27,8 +31,9 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     private LayoutInflater inflador; //Crea Layouts a partir del XML
     protected Vector<Libro> vectorLibros; //Vector con libros a visualizar
     private Context contexto;
-    private View.OnClickListener onClickListener;
-    private View.OnLongClickListener onLongClickListener;
+    private ClickAction clickAction = new EmptyClickAction();
+    private LongClickAction longClickAction = new EmptyLongClickAction();
+
 
     public AdaptadorLibros(Context contexto, Vector<Libro> vectorLibros) {
         inflador = (LayoutInflater) contexto
@@ -54,15 +59,28 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) { // Inflamos la vista desde el xml
         View v = inflador.inflate(R.layout.elemento_selector, null);
-        v.setOnClickListener(onClickListener);
-        v.setOnLongClickListener(onLongClickListener);
         return new ViewHolder(v);
     }
 
     // Usando como base el ViewHolder y lo personalizamos
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int posicion) {
+    public void onBindViewHolder(final ViewHolder holder, final int posicion) {
         final Libro libro = vectorLibros.elementAt(posicion);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickAction.execute(posicion);
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                longClickAction.execute(v);
+                return true;
+            }
+        });
+
         AudioLibraryApplication.getLectorImagenes().get(libro.urlImagen,
                 new ImageLoader.ImageListener() {
                     @Override
@@ -111,11 +129,12 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
         return vectorLibros.size();
     }
 
-    public void setOnItemClickListener(View.OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
+    public void setClickAction(ClickAction clickAction) {
+        this.clickAction = clickAction;
     }
 
-    public void setOnLongClickListener(View.OnLongClickListener onLongClickListener) {
-        this.onLongClickListener = onLongClickListener;
+    public void setLongClickAction(LongClickAction longClickAction) {
+        this.longClickAction = longClickAction;
     }
+
 }
