@@ -26,26 +26,26 @@ import android.view.View;
 import android.widget.Toast;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.controller.MainController;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
+import jamarfal.jalbertomartinfalcon.audiolibros.presenter.MainPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, MainPresenter.View {
 
     private AdaptadorLibrosFiltro adaptador;
     private AppBarLayout appBarLayout;
     private TabLayout tabs;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
-    private MainController mainController;
+    private MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainController = new MainController(LibroSharedPreferenceStorage.getInstance(this));
+        mainPresenter = new MainPresenter(LibroSharedPreferenceStorage.getInstance(this), this);
 
         Toolbar toolbar = initializeToolBar();
 
@@ -53,13 +53,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initializeFloatingActionButton();
 
-        //Pestañas
         initializeTabs();
-        
+
         appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
 
         initializeActionBar();
-        // Navigation Drawer
+
         initializeNavigationDrawer(toolbar);
 
         createFragment();
@@ -131,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                irUltimoVisitado();
+                mainPresenter.clickFavoriteButton();
             }
         });
     }
@@ -209,18 +208,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void irUltimoVisitado() {
-        int id = mainController.getLastBook();
-        if (id >= 0) {
-            showDetail(id);
-        } else {
-            Toast.makeText(this, "Sin última vista", Toast.LENGTH_LONG).show();
-        }
+        mainPresenter.clickFavoriteButton();
     }
 
-    public void showDetail(int id) {
-        showFragmentDetail(id);
-        mainController.saveLastBook(id);
-    }
 
     private void showFragmentDetail(int id) {
         DetalleFragment detalleFragment = (DetalleFragment)
@@ -334,5 +324,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onAnimationRepeat(Animator animator) {
 
+    }
+
+    @Override
+    public void showDetail(int lastBook) {
+        showFragmentDetail(lastBook);
+    }
+
+    @Override
+    public void showNoLastVisit() {
+        Toast.makeText(this, "Sin última vista", Toast.LENGTH_LONG).show();
     }
 }
