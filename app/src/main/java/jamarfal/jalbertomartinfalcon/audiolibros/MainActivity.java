@@ -26,7 +26,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
+import jamarfal.jalbertomartinfalcon.audiolibros.controller.MainController;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
@@ -38,25 +38,57 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TabLayout tabs;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
+    private MainController mainController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        mainController = new MainController(LibroSharedPreferenceStorage.getInstance(this));
+
+        Toolbar toolbar = initializeToolBar();
 
         adaptador = BooksSingleton.getInstance(this).getAdapter();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        initializeFloatingActionButton();
+
+        //Pestañas
+        initializeTabs();
+        
+        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
+
+        initializeActionBar();
+        // Navigation Drawer
+        initializeNavigationDrawer(toolbar);
+
+        createFragment();
+    }
+
+    private void initializeNavigationDrawer(Toolbar toolbar) {
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                irUltimoVisitado();
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
-        //Pestañas
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(
+                R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initializeActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    private void initializeTabs() {
         tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("Todos"));
         tabs.addTab(tabs.newTab().setText("Nuevos"));
@@ -92,36 +124,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
 
-
-        appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
-
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-        // Navigation Drawer
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+    private void initializeFloatingActionButton() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                onBackPressed();
+            public void onClick(View view) {
+                irUltimoVisitado();
             }
         });
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(
-                R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+    }
 
+    private Toolbar initializeToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        return toolbar;
+    }
+
+    private void createFragment() {
         if ((findViewById(R.id.contenedor_pequeno) != null) && (getSupportFragmentManager().findFragmentById(
                 R.id.contenedor_pequeno) == null)) {
             SelectorFragment primerFragment = new SelectorFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.contenedor_pequeno, primerFragment).commit();
         }
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -181,15 +209,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void irUltimoVisitado() {
-        int id = LibroSharedPreferenceStorage.getInstance(this).getLastBook();
+        int id = mainController.getLastBook();
         if (id >= 0) {
-            mostrarDetalle(id);
+            showDetail(id);
         } else {
             Toast.makeText(this, "Sin última vista", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void mostrarDetalle(int id) {
+    public void showDetail(int id) {
+        showFragmentDetail(id);
+        mainController.saveLastBook(id);
+    }
+
+    private void showFragmentDetail(int id) {
         DetalleFragment detalleFragment = (DetalleFragment)
                 getSupportFragmentManager().findFragmentById(R.id.detalle_fragment);
         if (detalleFragment != null) {
@@ -205,9 +238,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             transaccion.addToBackStack(null);
             transaccion.commit();
         }
-
-
-        LibroSharedPreferenceStorage.getInstance(this).saveLastBook(id);
     }
 
     public void mostrarElementos(boolean mostrar) {

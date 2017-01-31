@@ -16,6 +16,6 @@ public class OpenDetailClickAction implements ClickAction {
 
     @Override
     public void execute(int position) {
-        mainActivity.mostrarDetalle(position);
+        mainActivity.showDetail(position);
     }
 }
