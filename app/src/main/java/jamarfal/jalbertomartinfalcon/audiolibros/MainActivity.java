@@ -26,9 +26,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
+import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
+import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
+import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.MainPresenter;
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.BooksRepository;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, MainPresenter.View {
@@ -45,7 +49,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainPresenter = new MainPresenter(LibroSharedPreferenceStorage.getInstance(this), this);
+        BooksRepository booksRepository = BooksRepository.getINSTANCE(LibroSharedPreferenceStorage.getInstance(this));
+        mainPresenter = new MainPresenter(
+                new SaveLastBook(booksRepository),
+                new GetLastBook(booksRepository),
+                new HasLastBook(booksRepository),
+                this);
 
         Toolbar toolbar = initializeToolBar();
 
@@ -216,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DetalleFragment detalleFragment = (DetalleFragment)
                 getSupportFragmentManager().findFragmentById(R.id.detalle_fragment);
         if (detalleFragment != null) {
-            detalleFragment.ponInfoLibro(id);
+            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getVectorBooks().get(id));
         } else {
             DetalleFragment nuevoFragment = new DetalleFragment();
             Bundle args = new Bundle();

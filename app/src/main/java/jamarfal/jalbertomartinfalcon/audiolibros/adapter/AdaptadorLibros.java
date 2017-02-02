@@ -22,6 +22,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.command.ClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyLongClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.LongClickAction;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 /**
  * Created by jamarfal on 19/12/16.
@@ -81,7 +82,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             }
         });
 
-        AudioLibraryApplication.getLectorImagenes().get(libro.imageUrl,
+        VolleySingleton.getInstance(contexto).getLectorImagenes().get(libro.imageUrl,
                 new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {

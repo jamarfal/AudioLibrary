@@ -16,36 +16,44 @@ import com.android.volley.toolbox.NetworkImageView;
 
 import java.io.IOException;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.customviews.ZoomSeekBar;
+import jamarfal.jalbertomartinfalcon.audiolibros.presenter.DetailPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 /**
  * Created by jamarfal on 19/12/16.
  */
 
 public class DetalleFragment extends Fragment implements View.OnTouchListener, MediaPlayer.OnPreparedListener,
-        MediaController.MediaPlayerControl {
+        MediaController.MediaPlayerControl, DetailPresenter.View {
     public static String ARG_ID_LIBRO = "id_libro";
-    MediaPlayer mediaPlayer;
-    MediaController mediaController;
-    ZoomSeekBar zoomSeekBar;
+    private MediaPlayer mediaPlayer;
+    private MediaController mediaController;
+    private ZoomSeekBar zoomSeekBar;
+    private DetailPresenter detailPresenter;
+    private View rootView;
 
     @Override
-    public View onCreateView(LayoutInflater inflador, ViewGroup contenedor, Bundle savedInstanceState) {
-        View vista = inflador.inflate(R.layout.fragment_detalle,
-                contenedor, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_detalle,
+                container, false);
+        detailPresenter = new DetailPresenter(this, BooksSingleton.getInstance(getContext()));
+        detailPresenter.setBookId(getIdFromArguments());
+        detailPresenter.onCreate();
+        return rootView;
+    }
+
+    private int getIdFromArguments() {
         Bundle args = getArguments();
+        int position = 0;
         if (args != null) {
-            int position = args.getInt(ARG_ID_LIBRO);
-            ponInfoLibro(position, vista);
-        } else {
-            ponInfoLibro(0, vista);
+            position = args.getInt(ARG_ID_LIBRO);
         }
-        return vista;
+        return position;
     }
 
     @Override
@@ -58,40 +66,13 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         super.onResume();
     }
 
-    private void ponInfoLibro(int id, View vista) {
-        Libro libro = BooksSingleton.getInstance(getActivity()).getVectorBooks().elementAt(id);
-
-        ((TextView) vista.findViewById(R.id.labelTitle)).setText(libro.title);
-        ((TextView) vista.findViewById(R.id.labelAuthor)).setText(libro.author);
-        ((NetworkImageView) vista.findViewById(R.id.portada)).setImageUrl(
-                libro.imageUrl, AudioLibraryApplication.getLectorImagenes());
-        zoomSeekBar = (ZoomSeekBar) vista.findViewById(R.id.zoomseekbar);
-
-
-        vista.setOnTouchListener(this);
-
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-        }
-        mediaPlayer = new MediaPlayer();
-        mediaPlayer.setOnPreparedListener(this);
-        mediaController = new MediaController(getActivity());
-        Uri audio = Uri.parse(libro.audioUrl);
-        try {
-            mediaPlayer.setDataSource(getActivity(), audio);
-            mediaPlayer.prepareAsync();
-        } catch (IOException e) {
-            Log.e("Audiolibros", "ERROR: No se puede reproducir " + audio, e);
-        }
-    }
-
-    public void ponInfoLibro(int id) {
-        ponInfoLibro(id, getView());
-    }
-
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         Log.d("Audiolibros", "Entramos en onPrepared de MediaPlayer");
+        initializeMediaPlayer(mediaPlayer);
+    }
+
+    private void initializeMediaPlayer(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
         mediaController.setMediaPlayer(this);
         mediaController.setAnchorView(getView().findViewById(
@@ -176,5 +157,31 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     @Override
     public int getAudioSessionId() {
         return 0;
+    }
+
+    @Override
+    public void showBookInfo(Libro book) {
+        ((TextView) rootView.findViewById(R.id.labelTitle)).setText(book.title);
+        ((TextView) rootView.findViewById(R.id.labelAuthor)).setText(book.author);
+        ((NetworkImageView) rootView.findViewById(R.id.portada)).setImageUrl(
+                book.imageUrl, VolleySingleton.getInstance(getContext()).getLectorImagenes());
+        zoomSeekBar = (ZoomSeekBar) rootView.findViewById(R.id.zoomseekbar);
+
+
+        rootView.setOnTouchListener(this);
+
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setOnPreparedListener(this);
+        mediaController = new MediaController(getActivity());
+        Uri audio = Uri.parse(book.audioUrl);
+        try {
+            mediaPlayer.setDataSource(getActivity(), audio);
+            mediaPlayer.prepareAsync();
+        } catch (IOException e) {
+            Log.e("Audiolibros", "ERROR: No se puede reproducir " + audio, e);
+        }
     }
 }

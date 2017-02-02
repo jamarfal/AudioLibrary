@@ -44,11 +44,11 @@ public class VolleySingleton {
         return INSTANCE;
     }
 
-    public static RequestQueue getColaPeticiones() {
+    public RequestQueue getColaPeticiones() {
         return colaPeticiones;
     }
 
-    public static ImageLoader getLectorImagenes() {
+    public ImageLoader getLectorImagenes() {
         return lectorImagenes;
     }
 }
