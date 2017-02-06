@@ -30,7 +30,7 @@ public class WelcomeSplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 Intent mainIntent = new Intent(WelcomeSplashActivity.this,
-                        MainActivity.class);
+                        CustomLoginActivity.class);
 
 
                 startActivity(mainIntent);
@@ -48,7 +48,6 @@ public class WelcomeSplashActivity extends AppCompatActivity {
         });
 
         splashLabel.startAnimation(anim);
-
 
 
 //        new Handler().postDelayed(new Runnable() {

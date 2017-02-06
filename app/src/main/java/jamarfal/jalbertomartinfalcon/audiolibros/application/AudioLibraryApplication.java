@@ -7,6 +7,7 @@ import android.util.LruCache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Vector;
 
@@ -19,10 +20,15 @@ import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 
 public class AudioLibraryApplication extends Application {
 
-    
+
+    private FirebaseAuth auth;
+
     @Override
     public void onCreate() {
-
+        auth = FirebaseAuth.getInstance();
     }
 
+    public FirebaseAuth getAuth() {
+        return auth;
+    }
 }

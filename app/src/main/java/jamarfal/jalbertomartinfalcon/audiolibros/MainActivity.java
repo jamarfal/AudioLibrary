@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -23,9 +25,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;
@@ -34,6 +45,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.MainPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.repository.BooksRepository;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, MainPresenter.View {
 
@@ -43,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private MainPresenter mainPresenter;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +84,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initializeNavigationDrawer(toolbar);
 
         createFragment();
+
+        userName = LibroSharedPreferenceStorage.getInstance(this).getUserName();
+
+
     }
 
     private void initializeNavigationDrawer(Toolbar toolbar) {
@@ -87,6 +104,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(
                 R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView txtName = (TextView) headerLayout.findViewById(R.id.txtName);
+        txtName.setText(String.format(getString(R.string.welcome_message), userName));
+
+        // Foto de usuario
+        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+        Uri urlImagen = usuario.getPhotoUrl();
+        if (urlImagen != null) {
+            NetworkImageView fotoUsuario = (NetworkImageView)
+                    headerLayout.findViewById(R.id.imageView);
+            VolleySingleton volleySingleton = VolleySingleton.getInstance(this);
+            fotoUsuario.setImageUrl(urlImagen.toString(),
+                    volleySingleton.getLectorImagenes());
+        }
     }
 
     private void initializeActionBar() {
@@ -175,6 +206,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_suspense) {
             adaptador.setGenero(Libro.FILTER_THRILLER);
             adaptador.notifyDataSetChanged();
+        } else if (id == R.id.nav_signout) {
+            AuthUI.getInstance().signOut(this)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            LibroSharedPreferenceStorage libroSharedPreferenceStorage = LibroSharedPreferenceStorage.getInstance(MainActivity.this);
+                            libroSharedPreferenceStorage.removeEmail();
+                            libroSharedPreferenceStorage.removeProvider();
+                            libroSharedPreferenceStorage.removeUserName();
+                            Intent i = new Intent(MainActivity.this, CustomLoginActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    | Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(
                 R.id.drawer_layout);

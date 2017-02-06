@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "764542194836",
+    "firebase_url": "https://audiolibros-cb30c.firebaseio.com",
+    "project_id": "audiolibros-cb30c",
+    "storage_bucket": "audiolibros-cb30c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:764542194836:android:15e408536b33d640",
+        "android_client_info": {
+          "package_name": "jamarfal.jalbertomartinfalcon.audiolibros"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "764542194836-rd83335hm42piec5mms2qmmqgmgnag86.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0BGMKc4jwwV3Xmudf2Tl1enN2syqBKrU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "764542194836-rd83335hm42piec5mms2qmmqgmgnag86.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
