@@ -11,7 +11,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 public class DetailPresenter {
 
     private View view;
-    private int bookId;
+    private String bookId;
     private final BooksSingleton booksSingleton;
 
     public DetailPresenter(View view, BooksSingleton booksSingleton) {
@@ -20,17 +20,17 @@ public class DetailPresenter {
     }
 
     public void onCreate() {
-        Libro book = booksSingleton.getAdapter().getItemById(bookId);
+        Libro book = booksSingleton.getAdapter().getItemByKey(bookId);
         view.showBookInfo(book);
     }
 
 
-    public void setBookId(int bookId) {
+    public void setBookId(String bookId) {
         this.bookId = bookId;
     }
 
     public Libro getBook() {
-        return booksSingleton.getAdapter().getItemById(bookId);
+        return booksSingleton.getAdapter().getItemByKey(bookId);
     }
 
 

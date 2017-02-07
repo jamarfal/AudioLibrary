@@ -22,7 +22,7 @@ public class BooksRepository {
         return INSTANCE;
     }
 
-    public int getLastBook() {
+    public String getLastBook() {
         return librosStorage.getLastBook();
     }
 
@@ -30,7 +30,7 @@ public class BooksRepository {
         return librosStorage.hasLastBook();
     }
 
-    public void saveLastBook(int id) {
+    public void saveLastBook(String id) {
         this.librosStorage.saveLastBook(id);
     }
 }

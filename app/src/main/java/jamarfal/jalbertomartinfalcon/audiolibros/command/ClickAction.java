@@ -6,5 +6,5 @@ package jamarfal.jalbertomartinfalcon.audiolibros.command;
 
 public interface ClickAction {
 
-    void execute(int position);
+    void execute(String key);
 }

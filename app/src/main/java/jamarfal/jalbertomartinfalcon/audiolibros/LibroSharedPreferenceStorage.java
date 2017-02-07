@@ -3,8 +3,6 @@ package jamarfal.jalbertomartinfalcon.audiolibros;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.firebase.ui.auth.ui.User;
-
 /**
  * Created by jamarfal on 22/1/17.
  */
@@ -44,15 +42,15 @@ public class LibroSharedPreferenceStorage implements LibroStorage, UserStorage {
     }
 
     @Override
-    public int getLastBook() {
-        return getPreference().getInt(KEY_LAST_BOOK, -1);
+    public String getLastBook() {
+        return getPreference().getString(KEY_LAST_BOOK, "-1");
     }
 
     @Override
-    public void saveLastBook(int id) {
+    public void saveLastBook(String id) {
         SharedPreferences pref = getPreference();
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt(KEY_LAST_BOOK, id);
+        editor.putString(KEY_LAST_BOOK, id);
         editor.apply();
     }
 

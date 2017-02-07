@@ -30,13 +30,15 @@ public class MainPresenter {
         }
     }
 
-    public void openDetalle(int id) {
+    public void openDetalle(String id) {
         saveLastBook.execute(id);
-        view.showDetail(id);
+        view.showFragmentDetail(id);
     }
 
     public interface View {
-        void showDetail(int lastBook);
+        void showDetail(String lastBook);
+
+        void showFragmentDetail(String key);
 
         void showNoLastVisit();
     }

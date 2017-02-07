@@ -7,9 +7,9 @@ package jamarfal.jalbertomartinfalcon.audiolibros;
 public interface LibroStorage {
     boolean hasLastBook();
 
-    int getLastBook();
+    String getLastBook();
 
-    void saveLastBook(int id);
+    void saveLastBook(String id);
 
     boolean isAutoPlay();
 }

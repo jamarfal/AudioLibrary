@@ -35,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
+import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltroUi;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;
@@ -47,7 +48,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, MainPresenter.View {
 
-    private AdaptadorLibrosFiltro adaptador;
+    private AdaptadorLibrosFiltroUi adaptador;
     private AppBarLayout appBarLayout;
     private TabLayout tabs;
     private DrawerLayout drawer;
@@ -267,16 +268,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void showFragmentDetail(int id) {
+    @Override
+    public void showFragmentDetail(String key) {
         DetalleFragment detalleFragment = (DetalleFragment)
                 getSupportFragmentManager().findFragmentById(R.id.detalle_fragment);
         if (detalleFragment != null) {
 
-            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getAdapter().getItemById(id));
+            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getAdapter().getItemByKey(key));
         } else {
             DetalleFragment nuevoFragment = new DetalleFragment();
             Bundle args = new Bundle();
-            args.putInt(DetalleFragment.ARG_ID_LIBRO, id);
+            args.putString(DetalleFragment.ARG_ID_LIBRO, key);
             nuevoFragment.setArguments(args);
             FragmentTransaction transaccion = getSupportFragmentManager()
                     .beginTransaction();
@@ -383,8 +385,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public void showDetail(int lastBook) {
-        showFragmentDetail(lastBook);
+    public void showDetail(String lastBook) {
+        mainPresenter.openDetalle(lastBook);
     }
 
     @Override

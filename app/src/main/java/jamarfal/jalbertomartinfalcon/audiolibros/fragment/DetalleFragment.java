@@ -47,13 +47,13 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         return rootView;
     }
 
-    private int getIdFromArguments() {
+    private String getIdFromArguments() {
         Bundle args = getArguments();
-        int position = 0;
+        String key = "0";
         if (args != null) {
-            position = args.getInt(ARG_ID_LIBRO);
+            key = args.getString(ARG_ID_LIBRO);
         }
-        return position;
+        return key;
     }
 
     @Override

@@ -21,6 +21,8 @@ import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.SearchObservable;
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
+import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltroUi;
+import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosUI;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.OpenDetailClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ShowOptionsPopupClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
@@ -32,7 +34,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 public class SelectorFragment extends Fragment implements Animator.AnimatorListener {
     private Activity activity;
     private RecyclerView recyclerView;
-    private AdaptadorLibrosFiltro adapter;
+    private AdaptadorLibrosFiltroUi adapter;
 
     @Override
     public void onAttach(Context contexto) {
@@ -47,7 +49,14 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
     @Override
     public void onResume() {
         ((MainActivity) getActivity()).mostrarElementos(true);
+        adapter.activaEscuchadorLibros();
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        adapter.desactivaEscuchadorLibros();
     }
 
     @Override

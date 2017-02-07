@@ -13,11 +13,11 @@ public class MainController {
         this.libroStorage = libroStorage;
     }
 
-    public void saveLastBook(int id) {
+    public void saveLastBook(String id) {
         libroStorage.saveLastBook(id);
     }
 
-    public int getLastBook() {
+    public String getLastBook() {
         return libroStorage.getLastBook();
     }
 }

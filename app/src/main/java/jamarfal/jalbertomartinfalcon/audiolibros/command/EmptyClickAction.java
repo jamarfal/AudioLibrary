@@ -6,7 +6,7 @@ package jamarfal.jalbertomartinfalcon.audiolibros.command;
 
 public class EmptyClickAction implements ClickAction {
     @Override
-    public void execute(int position) {
+    public void execute(String key) {
         // Implementación Vacia, no queremos que haga nada
     }
 }

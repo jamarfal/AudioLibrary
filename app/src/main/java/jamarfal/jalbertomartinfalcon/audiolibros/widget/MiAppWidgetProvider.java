@@ -56,8 +56,8 @@ public class MiAppWidgetProvider extends AppWidgetProvider {
 
     public static void actualizaWidget(Context context, int widgetId) {
 
-        int id = LibroSharedPreferenceStorage.getInstance(context).getLastBook();
-        libro = BooksSingleton.getInstance(context).getAdapter().getItemById(id);
+        String id = LibroSharedPreferenceStorage.getInstance(context).getLastBook();
+        libro = BooksSingleton.getInstance(context).getAdapter().getItemByKey(id);
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         remoteViews.setTextViewText(R.id.lblAutor, "Autor: " + libro.getAutor());
