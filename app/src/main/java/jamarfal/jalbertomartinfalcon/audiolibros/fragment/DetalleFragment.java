@@ -161,10 +161,10 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
 
     @Override
     public void showBookInfo(Libro book) {
-        ((TextView) rootView.findViewById(R.id.labelTitle)).setText(book.title);
-        ((TextView) rootView.findViewById(R.id.labelAuthor)).setText(book.author);
+        ((TextView) rootView.findViewById(R.id.labelTitle)).setText(book.getTitulo());
+        ((TextView) rootView.findViewById(R.id.labelAuthor)).setText(book.getAutor());
         ((NetworkImageView) rootView.findViewById(R.id.portada)).setImageUrl(
-                book.imageUrl, VolleySingleton.getInstance(getContext()).getLectorImagenes());
+                book.getUrlImagen(), VolleySingleton.getInstance(getContext()).getLectorImagenes());
         zoomSeekBar = (ZoomSeekBar) rootView.findViewById(R.id.zoomseekbar);
 
 
@@ -176,7 +176,7 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnPreparedListener(this);
         mediaController = new MediaController(getActivity());
-        Uri audio = Uri.parse(book.audioUrl);
+        Uri audio = Uri.parse(book.getUrlAudio());
         try {
             mediaPlayer.setDataSource(getActivity(), audio);
             mediaPlayer.prepareAsync();

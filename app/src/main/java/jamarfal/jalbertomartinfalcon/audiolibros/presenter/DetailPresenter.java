@@ -20,7 +20,7 @@ public class DetailPresenter {
     }
 
     public void onCreate() {
-        Libro book = booksSingleton.getVectorBooks().get(bookId);
+        Libro book = booksSingleton.getAdapter().getItemById(bookId);
         view.showBookInfo(book);
     }
 
@@ -30,9 +30,8 @@ public class DetailPresenter {
     }
 
     public Libro getBook() {
-        return booksSingleton.getVectorBooks().get(bookId);
+        return booksSingleton.getAdapter().getItemById(bookId);
     }
-
 
 
     public interface View {

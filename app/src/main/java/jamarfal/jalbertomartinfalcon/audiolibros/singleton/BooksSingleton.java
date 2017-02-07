@@ -2,10 +2,10 @@ package jamarfal.jalbertomartinfalcon.audiolibros.singleton;
 
 import android.content.Context;
 
-import java.util.Vector;
+import com.google.firebase.database.DatabaseReference;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
+import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 
 /**
  * Created by jamarfal on 30/1/17.
@@ -14,12 +14,11 @@ import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
 public class BooksSingleton {
 
     public static BooksSingleton INSTANCE = null;
-    private Vector<Libro> vectorBooks;
     private AdaptadorLibrosFiltro adapter;
 
     private BooksSingleton(Context context) {
-        vectorBooks = Libro.ejemploLibros();
-        adapter = new AdaptadorLibrosFiltro(context, vectorBooks);
+        DatabaseReference booksReference = ((AudioLibraryApplication) context.getApplicationContext()).getBooksReference();
+        adapter = new AdaptadorLibrosFiltro(context, booksReference);
     }
 
     public static BooksSingleton getInstance(Context context) {
@@ -32,8 +31,5 @@ public class BooksSingleton {
     public AdaptadorLibrosFiltro getAdapter() {
         return adapter;
     }
-
-    public Vector<Libro> getVectorBooks() {
-        return vectorBooks;
-    }
+    
 }

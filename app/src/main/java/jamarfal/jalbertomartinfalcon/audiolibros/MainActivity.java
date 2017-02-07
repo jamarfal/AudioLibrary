@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,7 +35,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;
@@ -273,7 +271,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DetalleFragment detalleFragment = (DetalleFragment)
                 getSupportFragmentManager().findFragmentById(R.id.detalle_fragment);
         if (detalleFragment != null) {
-            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getVectorBooks().get(id));
+
+            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getAdapter().getItemById(id));
         } else {
             DetalleFragment nuevoFragment = new DetalleFragment();
             Bundle args = new Bundle();
@@ -314,11 +313,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         anim.addListener(MainActivity.this);
                         anim.setTarget(v);
                         anim.start();
-                        Libro libro = BooksSingleton.getInstance(MainActivity.this).getVectorBooks().elementAt(id);
+                        Libro libro = BooksSingleton.getInstance(MainActivity.this).getAdapter().getItemById(id);
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("text/plain");
-                        i.putExtra(Intent.EXTRA_SUBJECT, libro.title);
-                        i.putExtra(Intent.EXTRA_TEXT, libro.audioUrl);
+                        i.putExtra(Intent.EXTRA_SUBJECT, libro.getTitulo());
+                        i.putExtra(Intent.EXTRA_TEXT, libro.getUrlAudio());
                         startActivity(Intent.createChooser(i, "Compartir"));
                         break;
                     case 1: // Borrar
@@ -347,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case 2: //Insertar
                         int posicion = recyclerView.getChildLayoutPosition(v);
                         adaptador.insertar((Libro) adaptador.getItem(posicion));
-                        adaptador.notifyItemInserted(0);
+                        adaptador.notifyItemInserted(adaptador.getItemCount() + 1);
                         Snackbar.make(v, "Libro insertado", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("OK", new View.OnClickListener() {
                                     @Override

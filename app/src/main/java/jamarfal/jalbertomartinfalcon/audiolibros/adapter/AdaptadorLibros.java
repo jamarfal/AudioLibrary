@@ -12,12 +12,11 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-
-import java.util.Vector;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.database.DatabaseReference;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
-import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyLongClickAction;
@@ -28,27 +27,29 @@ import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
  * Created by jamarfal on 19/12/16.
  */
 
-public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHolder> {
+public class AdaptadorLibros extends FirebaseRecyclerAdapter<Libro, AdaptadorLibros.ViewHolder> {
     private LayoutInflater inflador; //Crea Layouts a partir del XML
-    protected Vector<Libro> vectorLibros; //Vector con libros a visualizar
+    protected DatabaseReference booksReference;
     private Context contexto;
     private ClickAction clickAction = new EmptyClickAction();
     private LongClickAction longClickAction = new EmptyLongClickAction();
 
 
-    public AdaptadorLibros(Context contexto, Vector<Libro> vectorLibros) {
+    public AdaptadorLibros(Context contexto, DatabaseReference databaseReference) {
+        super(Libro.class, R.layout.elemento_selector,
+                AdaptadorLibros.ViewHolder.class, databaseReference);
         inflador = (LayoutInflater) contexto
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.vectorLibros = vectorLibros;
+        this.booksReference = databaseReference;
         this.contexto = contexto;
     }
 
     //Creamos nuestro ViewHolder, con los tipos de elementos a modificar
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView portada;
-        public TextView titulo;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView portada;
+        TextView titulo;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             portada = (ImageView) itemView.findViewById(R.id.portada);
             portada.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
@@ -64,9 +65,9 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     }
 
     // Usando como base el ViewHolder y lo personalizamos
+
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int posicion) {
-        final Libro libro = vectorLibros.elementAt(posicion);
+    protected void populateViewHolder(final ViewHolder holder, final Libro libro, final int posicion) {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +83,7 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
             }
         });
 
-        VolleySingleton.getInstance(contexto).getLectorImagenes().get(libro.imageUrl,
+        VolleySingleton.getInstance(contexto).getLectorImagenes().get(libro.getUrlImagen(),
                 new ImageLoader.ImageListener() {
                     @Override
                     public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
@@ -119,16 +120,11 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
                     }
 
                 });
-        holder.titulo.setText(libro.title);
+        holder.titulo.setText(libro.getTitulo());
         holder.itemView.setScaleX(1);
         holder.itemView.setScaleY(1);
     }
 
-    // Indicamos el número de elementos de la lista
-    @Override
-    public int getItemCount() {
-        return vectorLibros.size();
-    }
 
     public void setClickAction(ClickAction clickAction) {
         this.clickAction = clickAction;

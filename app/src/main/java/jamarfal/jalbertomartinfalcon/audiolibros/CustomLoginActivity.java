@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -75,6 +76,7 @@ public class CustomLoginActivity extends FragmentActivity
 
         setContentView(R.layout.activity_custom_login);
         btnGoogle = (SignInButton) findViewById(R.id.btnGoogle);
+//        btnTwitter = (TwitterLoginButton) findViewById(R.id.twitter_button);
         btnGoogle.setOnClickListener(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         inputEmail = (EditText) findViewById(R.id.editTxtEmail);
@@ -87,9 +89,11 @@ public class CustomLoginActivity extends FragmentActivity
         layoutEmailButtons = (LinearLayout) findViewById(R.id.layoutEmailButtons);
         auth = ((AudioLibraryApplication) getApplicationContext()).getAuth();
 
+//        btnTwitter.setEnabled(true);
+
         doLogin();
 
-        btnTwitter.setEnabled(true);
+
 
         //Facebook
         callbackManager = CallbackManager.Factory.create();
@@ -148,6 +152,7 @@ public class CustomLoginActivity extends FragmentActivity
     private void doLogin() {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
+            guardarUsuario(currentUser);
             String name = currentUser.getDisplayName();
             String email = currentUser.getEmail();
             String provider = currentUser.getProviders().get(0);
@@ -337,5 +342,34 @@ public class CustomLoginActivity extends FragmentActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         showSnackbar(getString(R.string.error_connection_failed));
+    }
+
+    //    void guardarUsuario(final FirebaseUser user) {
+//        DatabaseReference usersReference = ((AudioLibraryApplication) getApplicationContext())
+//                .getUsersReference();
+//
+//        final DatabaseReference currentUserReference = usersReference.child(user.getUid());
+//
+//        ValueEventListener userListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (!dataSnapshot.exists()) {
+//                    currentUserReference.setValue(new User(
+//                            user.getDisplayName(), user.getEmail()));
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        };
+//        currentUserReference.addListenerForSingleValueEvent(userListener);
+//    }
+
+    void guardarUsuario(final FirebaseUser user) {
+        AudioLibraryApplication audioLibraryApplication = ((AudioLibraryApplication) getApplicationContext());
+        DatabaseReference userReference = audioLibraryApplication.getUsersReference().child(user.getUid());
+        userReference.setValue(new User(user.getDisplayName(), user.getEmail()));
     }
 }

@@ -9,6 +9,10 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
@@ -29,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private void doLogin() {
         FirebaseUser currentUser = auth.getCurrentUser();
         if (currentUser != null) {
+            guardarUsuario(currentUser);
             String name = currentUser.getDisplayName();
             String email = currentUser.getEmail();
             String provider = currentUser.getProviders().get(0);
@@ -67,5 +72,35 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         }
+    }
+
+
+//    void guardarUsuario(final FirebaseUser user) {
+//        DatabaseReference usersReference = ((AudioLibraryApplication) getApplicationContext())
+//                .getUsersReference();
+//
+//        final DatabaseReference currentUserReference = usersReference.child(user.getUid());
+//
+//        ValueEventListener userListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (!dataSnapshot.exists()) {
+//                    currentUserReference.setValue(new User(
+//                            user.getDisplayName(), user.getEmail()));
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        };
+//        currentUserReference.addListenerForSingleValueEvent(userListener);
+//    }
+
+    void guardarUsuario(final FirebaseUser user) {
+        AudioLibraryApplication audioLibraryApplication = ((AudioLibraryApplication) getApplicationContext());
+        DatabaseReference userReference = audioLibraryApplication.getUsersReference().child(user.getUid());
+        userReference.setValue(new User(user.getDisplayName(), user.getEmail()));
     }
 }

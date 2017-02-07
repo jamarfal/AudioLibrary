@@ -17,13 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Vector;
-
-import jamarfal.jalbertomartinfalcon.audiolibros.SearchObservable;
-import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
+import jamarfal.jalbertomartinfalcon.audiolibros.SearchObservable;
+import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.OpenDetailClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ShowOptionsPopupClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
@@ -36,7 +33,6 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
     private Activity activity;
     private RecyclerView recyclerView;
     private AdaptadorLibrosFiltro adapter;
-    private Vector<Libro> vectorBooks;
 
     @Override
     public void onAttach(Context contexto) {
@@ -45,7 +41,6 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
             this.activity = (Activity) contexto;
             BooksSingleton booksSingleton = BooksSingleton.getInstance(contexto);
             adapter = booksSingleton.getAdapter();
-            vectorBooks = booksSingleton.getVectorBooks();
         }
     }
 
