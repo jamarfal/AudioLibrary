@@ -57,7 +57,7 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
             if ((libro.getTitulo().toLowerCase().contains(busqueda) ||
                     libro.getAutor().toLowerCase().contains(busqueda))
                     && (libro.getGenero().startsWith(genero))
-                    && (!novedad || (novedad && libro.isNew()))
+                    && (!novedad || (novedad && libro.isNovedad()))
                     /*&& (!leido || (leido && libro.isRead))*/) {
                 indiceFiltro.add(i);
             }

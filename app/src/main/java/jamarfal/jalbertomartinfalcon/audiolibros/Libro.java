@@ -15,7 +15,7 @@ public class Libro {
     private String urlImagen;
     private String urlAudio;
     private String genero; // Género literario
-    private Boolean novedad; // Es una novedad
+    private boolean novedad; // Es una novedad
     private Map<String, Boolean> leido;
     private int colorVibrante, colorApagado;
 
@@ -31,7 +31,7 @@ public class Libro {
     public final static Libro EMPTY_BOOK = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg", "", FILTER_ALL, false);
 
     private Libro(String titulo, String autor, String urlImagen,
-                  String urlAudio, String genero, Boolean novedad) {
+                  String urlAudio, String genero, boolean novedad) {
         this.titulo = titulo;
         this.autor = autor;
         this.urlImagen = urlImagen;
@@ -86,12 +86,12 @@ public class Libro {
         this.genero = genero;
     }
 
-    public Boolean isNew() {
+    public boolean isNovedad() {
         return novedad;
     }
 
-    public void setNew(Boolean aNew) {
-        novedad = aNew;
+    public void setNovedad(boolean novedad) {
+        this.novedad = novedad;
     }
 
     public Map<String, Boolean> getLeido() {

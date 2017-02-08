@@ -26,6 +26,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosUI;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.OpenDetailClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ShowOptionsPopupClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.Lecturas;
 
 /**
  * Created by jamarfal on 19/12/16.
@@ -50,12 +51,14 @@ public class SelectorFragment extends Fragment implements Animator.AnimatorListe
     public void onResume() {
         ((MainActivity) getActivity()).mostrarElementos(true);
         adapter.activaEscuchadorLibros();
+        Lecturas.getInstance().activaEscuchadorMisLecturas();
         super.onResume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        Lecturas.getInstance().desactivaEscuchadorMisLecturas();
         adapter.desactivaEscuchadorLibros();
     }
 

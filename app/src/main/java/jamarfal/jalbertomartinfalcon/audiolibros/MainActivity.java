@@ -44,6 +44,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.MainPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.repository.BooksRepository;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.Lecturas;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, MainPresenter.View {
@@ -85,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         createFragment();
 
         userName = LibroSharedPreferenceStorage.getInstance(this).getUserName();
+
+
 
 
     }
