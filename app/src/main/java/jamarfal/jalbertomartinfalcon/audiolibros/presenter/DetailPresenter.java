@@ -1,7 +1,6 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.presenter;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
-import jamarfal.jalbertomartinfalcon.audiolibros.LibroStorage;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 
 /**
@@ -21,7 +20,7 @@ public class DetailPresenter {
 
     public void onCreate() {
         Libro book = booksSingleton.getAdapter().getItemByKey(bookId);
-        view.showBookInfo(book);
+        view.showBookInfo(book, bookId);
     }
 
 
@@ -36,7 +35,7 @@ public class DetailPresenter {
 
     public interface View {
 
-        void showBookInfo(Libro book);
+        void showBookInfo(Libro book, String key);
 
     }
 }

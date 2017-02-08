@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.LibroSharedPreferenceStorage;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;

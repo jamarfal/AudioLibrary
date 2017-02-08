@@ -8,7 +8,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.Lecturas;
 
 /**
  * Created by jamarfal on 20/12/16.
@@ -54,11 +55,12 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
         librosUltimoFiltro = super.getItemCount();
         for (int i = 0; i < librosUltimoFiltro; i++) {
             Libro libro = super.getItem(i);
+            boolean userReadBook = Lecturas.getInstance().hasReadBook(super.getItemKey(i));
             if ((libro.getTitulo().toLowerCase().contains(busqueda) ||
                     libro.getAutor().toLowerCase().contains(busqueda))
                     && (libro.getGenero().startsWith(genero))
                     && (!novedad || (novedad && libro.isNovedad()))
-                    /*&& (!leido || (leido && libro.isRead))*/) {
+                    && (!leido || (leido && userReadBook))) {
                 indiceFiltro.add(i);
             }
         }

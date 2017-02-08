@@ -50,17 +50,12 @@ public class Lecturas implements ChildEventListener {
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        String key = dataSnapshot.getKey();
-        int index = idLibros.indexOf(key);
-//        if (index != -1) {
-//            items.set(index, dataSnapshot);
-//            notifyItemChanged(index, dataSnapshot.getValue(Libro.class));
-//        }
+
     }
 
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+        idLibros.remove(dataSnapshot.getKey());
     }
 
     @Override
@@ -75,5 +70,13 @@ public class Lecturas implements ChildEventListener {
 
     public boolean hasReadBook(String key) {
         return idLibros.contains(key);
+    }
+
+    public void markBookAsRead(String key, boolean read) {
+        if (read) {
+            referenciaMisLecturas.child(key).setValue(true);
+        } else {
+            referenciaMisLecturas.child(key).getRef().removeValue();
+        }
     }
 }

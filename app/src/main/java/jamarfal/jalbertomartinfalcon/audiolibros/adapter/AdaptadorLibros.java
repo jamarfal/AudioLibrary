@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyClickAction;
@@ -190,7 +189,10 @@ public class AdaptadorLibros extends RecyclerView.Adapter<AdaptadorLibros.ViewHo
     }
 
     public Libro getItem(int pos) {
-        return items.get(pos).getValue(Libro.class);
+
+        Libro libro = items.get(pos).getValue(Libro.class);
+        libro.setId(items.get(pos).getKey());
+        return libro;
     }
 
     public void activaEscuchadorLibros() {

@@ -15,7 +15,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.ClickAction;
 import jamarfal.jalbertomartinfalcon.audiolibros.command.EmptyClickAction;

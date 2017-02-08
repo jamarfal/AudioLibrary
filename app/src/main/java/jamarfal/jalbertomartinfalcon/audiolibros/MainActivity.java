@@ -40,6 +40,7 @@ import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.DetalleFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.MainPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.repository.BooksRepository;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new HasLastBook(booksRepository),
                 this);
 
+        userName = LibroSharedPreferenceStorage.getInstance(this).getUserName();
+
         Toolbar toolbar = initializeToolBar();
 
         adaptador = BooksSingleton.getInstance(this).getAdapter();
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         createFragment();
 
-        userName = LibroSharedPreferenceStorage.getInstance(this).getUserName();
+
 
 
 
@@ -275,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().findFragmentById(R.id.detalle_fragment);
         if (detalleFragment != null) {
 
-            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getAdapter().getItemByKey(key));
+            detalleFragment.showBookInfo(BooksSingleton.getInstance(this).getAdapter().getItemByKey(key), key);
         } else {
             DetalleFragment nuevoFragment = new DetalleFragment();
             Bundle args = new Bundle();

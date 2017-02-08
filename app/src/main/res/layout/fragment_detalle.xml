@@ -58,7 +58,17 @@
             android:layout_centerHorizontal="true"
             android:scaleType="fitCenter" />
 
-
+        <ToggleButton
+            android:id="@+id/togglebutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="Leido"
+            android:textOff="No Leido"
+            android:layout_below="@+id/labelTitle"
+            android:layout_toLeftOf="@+id/labelTitle"
+            android:layout_toStartOf="@+id/labelTitle"
+            android:layout_marginRight="54dp"
+            android:layout_marginEnd="54dp" />
 
 
     </RelativeLayout>

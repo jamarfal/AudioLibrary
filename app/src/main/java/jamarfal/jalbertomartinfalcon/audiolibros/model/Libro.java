@@ -1,4 +1,4 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,7 @@ import java.util.Vector;
 
 public class Libro {
 
+    private String id;
     private String titulo;
     private String autor;
     private String urlImagen;
@@ -20,12 +21,11 @@ public class Libro {
     private int colorVibrante, colorApagado;
 
     private final static String FILTER_ALL = "Todos los géneros";
-    final static String FILTER_EPIC = "Poema épico";
-    final static String FILTER_S_XIX = "Literatura siglo XIX";
+    public final static String FILTER_EPIC = "Poema épico";
+    public final static String FILTER_S_XIX = "Literatura siglo XIX";
     public final static String FILTER_THRILLER = "Suspense";
     public final static String[] FILTERS_ARRAY = new String[]{FILTER_ALL, FILTER_EPIC,
             FILTER_S_XIX, FILTER_THRILLER};
-
 
 
     public final static Libro EMPTY_BOOK = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg", "", FILTER_ALL, false);
@@ -44,6 +44,14 @@ public class Libro {
     }
 
     public Libro() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitulo() {

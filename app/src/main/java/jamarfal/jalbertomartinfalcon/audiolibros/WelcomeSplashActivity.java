@@ -30,7 +30,7 @@ public class WelcomeSplashActivity extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 Intent mainIntent = new Intent(WelcomeSplashActivity.this,
-                        LoginActivity.class);
+                        CustomLoginActivity.class);
 
 
                 startActivity(mainIntent);

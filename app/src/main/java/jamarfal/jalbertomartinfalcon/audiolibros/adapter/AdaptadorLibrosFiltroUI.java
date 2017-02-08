@@ -8,7 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 
 /**
  * Created by jamarfal on 20/12/16.

@@ -11,17 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.android.volley.toolbox.NetworkImageView;
 
 import java.io.IOException;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
+import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
 import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.customviews.ZoomSeekBar;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.DetailPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
+import jamarfal.jalbertomartinfalcon.audiolibros.singleton.Lecturas;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 /**
@@ -41,20 +43,10 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_detalle,
                 container, false);
-        detailPresenter = new DetailPresenter(this, BooksSingleton.getInstance(getContext()));
-        detailPresenter.setBookId(getIdFromArguments());
-        detailPresenter.onCreate();
+        initializePresenter();
         return rootView;
     }
 
-    private String getIdFromArguments() {
-        Bundle args = getArguments();
-        String key = "0";
-        if (args != null) {
-            key = args.getString(ARG_ID_LIBRO);
-        }
-        return key;
-    }
 
     @Override
     public void onResume() {
@@ -72,6 +64,12 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         initializeMediaPlayer(mediaPlayer);
     }
 
+    private void initializePresenter() {
+        detailPresenter = new DetailPresenter(this, BooksSingleton.getInstance(getContext()));
+        detailPresenter.setBookId(getIdFromArguments());
+        detailPresenter.onCreate();
+    }
+
     private void initializeMediaPlayer(MediaPlayer mediaPlayer) {
         mediaPlayer.start();
         mediaController.setMediaPlayer(this);
@@ -80,6 +78,16 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
         mediaController.setPadding(0, 0, 0, 110);
         mediaController.setEnabled(true);
         mediaController.show();
+    }
+
+
+    private String getIdFromArguments() {
+        Bundle args = getArguments();
+        String key = "0";
+        if (args != null) {
+            key = args.getString(ARG_ID_LIBRO);
+        }
+        return key;
     }
 
     @Override
@@ -160,11 +168,22 @@ public class DetalleFragment extends Fragment implements View.OnTouchListener, M
     }
 
     @Override
-    public void showBookInfo(Libro book) {
+    public void showBookInfo(Libro book, final String key) {
         ((TextView) rootView.findViewById(R.id.labelTitle)).setText(book.getTitulo());
         ((TextView) rootView.findViewById(R.id.labelAuthor)).setText(book.getAutor());
         ((NetworkImageView) rootView.findViewById(R.id.portada)).setImageUrl(
                 book.getUrlImagen(), VolleySingleton.getInstance(getContext()).getLectorImagenes());
+        final ToggleButton togglebutton = (ToggleButton) rootView.findViewById(R.id.togglebutton);
+
+        togglebutton.setChecked(Lecturas.getInstance().hasReadBook(key));
+
+        togglebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Lecturas.getInstance().markBookAsRead(key, togglebutton.isChecked());
+                BooksSingleton.getInstance(getActivity()).getAdapter().recalculaFiltro();
+            }
+        });
         zoomSeekBar = (ZoomSeekBar) rootView.findViewById(R.id.zoomseekbar);
 
 

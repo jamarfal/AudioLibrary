@@ -1,6 +1,6 @@
 package jamarfal.jalbertomartinfalcon.audiolibros;
 
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +21,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -94,8 +95,48 @@ public class CustomLoginActivity extends FragmentActivity
         doLogin();
 
 
-
         //Facebook
+        initFacebookAuth();
+
+        //Google
+        initGoogleAuth();
+
+        //Twitter
+        initTwitterAuth();
+    }
+
+    private void initTwitterAuth() {
+        btnTwitter = (TwitterLoginButton) findViewById(R.id.btnTwitter);
+        btnTwitter.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                twitterAuth(result.data);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                showSnackbar(exception.getLocalizedMessage());
+            }
+        });
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(
+                getString(R.string.twitter_consumer_key),
+                getString(R.string.twitter_consumer_secret));
+        Fabric.with(this, new Twitter(authConfig));
+    }
+
+    private void initGoogleAuth() {
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        googleApiClient = new GoogleApiClient
+                .Builder(this).enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    private void initFacebookAuth() {
         callbackManager = CallbackManager.Factory.create();
         btnFacebook = (LoginButton) findViewById(R.id.btnFacebook);
         btnFacebook.setOnClickListener(this);
@@ -118,35 +159,6 @@ public class CustomLoginActivity extends FragmentActivity
 
                     }
                 });
-
-        //Google
-        GoogleSignInOptions gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        googleApiClient = new GoogleApiClient
-                .Builder(this).enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-        //Twitter
-        btnTwitter = (TwitterLoginButton) findViewById(R.id.btnTwitter);
-        btnTwitter.setCallback(new Callback<TwitterSession>() {
-            @Override
-            public void success(Result<TwitterSession> result) {
-                twitterAuth(result.data);
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                showSnackbar(exception.getLocalizedMessage());
-            }
-        });
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(
-                getString(R.string.twitter_consumer_key),
-                getString(R.string.twitter_consumer_secret));
-        Fabric.with(this, new Twitter(authConfig));
     }
 
     private void doLogin() {
@@ -157,13 +169,45 @@ public class CustomLoginActivity extends FragmentActivity
             String email = currentUser.getEmail();
             String provider = currentUser.getProviders().get(0);
             saveUserInfo(name, email, provider);
-            Intent i = new Intent(this, MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    | Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
-            finish();
+
+            if (provider.equalsIgnoreCase(LoginActivity.PASSWORD)) {
+                isMailVerified(currentUser);
+            } else {
+                goToMainActivity();
+            }
         }
+    }
+
+    private void isMailVerified(final FirebaseUser currentUser) {
+        if (currentUser.isEmailVerified()) {
+            goToMainActivity();
+        } else {
+            showVerificationDialog(currentUser);
+            currentUser.sendEmailVerification();
+        }
+    }
+
+    private void showVerificationDialog(final FirebaseUser currentUser) {
+        android.app.AlertDialog.Builder alertDialogAbout = new android.app.AlertDialog.Builder(this);
+        alertDialogAbout.setMessage("No ha verificado su mail, por favor compruebe su bandeja de entrada y verifíquelo\"")
+                .setTitle("Verificación de email requerida")
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        currentUser.sendEmailVerification();
+                        logout();
+
+                    }
+                })
+                .show();
+    }
+
+    private void goToMainActivity() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        finish();
     }
 
     private void saveUserInfo(String name, String email, String provider) {
@@ -198,6 +242,25 @@ public class CustomLoginActivity extends FragmentActivity
         } else {
             wrapperEmail.setError(getString(R.string.error_empty));
         }
+    }
+
+    private void logout() {
+        AuthUI.getInstance().signOut(CustomLoginActivity.this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        LibroSharedPreferenceStorage libroSharedPreferenceStorage = LibroSharedPreferenceStorage.getInstance(CustomLoginActivity.this);
+                        libroSharedPreferenceStorage.removeEmail();
+                        libroSharedPreferenceStorage.removeProvider();
+                        libroSharedPreferenceStorage.removeUserName();
+                        Intent i = new Intent(CustomLoginActivity.this, CustomLoginActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                | Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                        finish();
+                    }
+                });
     }
 
     public void signup(View v) {
@@ -371,5 +434,10 @@ public class CustomLoginActivity extends FragmentActivity
         AudioLibraryApplication audioLibraryApplication = ((AudioLibraryApplication) getApplicationContext());
         DatabaseReference userReference = audioLibraryApplication.getUsersReference().child(user.getUid());
         userReference.setValue(new User(user.getDisplayName(), user.getEmail()));
+    }
+
+    public void gotToLoginActivity(View v) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
