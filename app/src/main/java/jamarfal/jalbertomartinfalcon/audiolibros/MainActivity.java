@@ -35,7 +35,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltroUi;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;
@@ -44,12 +43,11 @@ import jamarfal.jalbertomartinfalcon.audiolibros.fragment.SelectorFragment;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.MainPresenter;
 import jamarfal.jalbertomartinfalcon.audiolibros.repository.BooksRepository;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
-import jamarfal.jalbertomartinfalcon.audiolibros.singleton.Lecturas;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.VolleySingleton;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, Animator.AnimatorListener, MainPresenter.View {
 
-    private AdaptadorLibrosFiltroUi adaptador;
+    private AdaptadorLibrosFiltro adaptador;
     private AppBarLayout appBarLayout;
     private TabLayout tabs;
     private DrawerLayout drawer;

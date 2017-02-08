@@ -5,8 +5,6 @@ import android.content.Context;
 import com.google.firebase.database.DatabaseReference;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
-import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltroUi;
-import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosUI;
 import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 
 /**
@@ -16,13 +14,11 @@ import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplica
 public class BooksSingleton {
 
     public static BooksSingleton INSTANCE = null;
-    //    private AdaptadorLibrosFiltro adapter;
-    private AdaptadorLibrosFiltroUi adapter;
+    private AdaptadorLibrosFiltro adapter;
 
     private BooksSingleton(Context context) {
         DatabaseReference booksReference = ((AudioLibraryApplication) context.getApplicationContext()).getBooksReference();
-//        adapter = new AdaptadorLibrosFiltro(context, booksReference);
-        adapter = new AdaptadorLibrosFiltroUi(context, booksReference);
+        adapter = new AdaptadorLibrosFiltro(context, booksReference);
     }
 
     public static BooksSingleton getInstance(Context context) {
@@ -32,7 +28,7 @@ public class BooksSingleton {
         return INSTANCE;
     }
 
-    public AdaptadorLibrosFiltroUi getAdapter() {
+    public AdaptadorLibrosFiltro getAdapter() {
         return adapter;
     }
 

@@ -9,13 +9,12 @@ import java.util.Observer;
 import java.util.Vector;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.Libro;
-import jamarfal.jalbertomartinfalcon.audiolibros.singleton.Lecturas;
 
 /**
  * Created by jamarfal on 20/12/16.
  */
 
-public class AdaptadorLibrosFiltroUi extends AdaptadorLibrosUI implements Observer {
+public class AdaptadorLibrosFiltroUI extends AdaptadorLibros implements Observer {
     private Vector<Integer> indiceFiltro; // Índice en vectorSinFiltro de cada elemento de vectorLibros
     private String busqueda = "";
     private String genero = "";
@@ -24,7 +23,7 @@ public class AdaptadorLibrosFiltroUi extends AdaptadorLibrosUI implements Observ
     private int librosUltimoFiltro; //Número libros del padre en último filtro
 
 
-    public AdaptadorLibrosFiltroUi(Context contexto,
+    public AdaptadorLibrosFiltroUI(Context contexto,
                                    DatabaseReference reference) {
         super(contexto, reference);
         recalculaFiltro();
@@ -55,17 +54,14 @@ public class AdaptadorLibrosFiltroUi extends AdaptadorLibrosUI implements Observ
         librosUltimoFiltro = super.getItemCount();
         for (int i = 0; i < librosUltimoFiltro; i++) {
             Libro libro = super.getItem(i);
-            boolean userHasRead = Lecturas.getInstance().hasReadBook(super.getItemKey(i));
             if ((libro.getTitulo().toLowerCase().contains(busqueda) ||
                     libro.getAutor().toLowerCase().contains(busqueda))
                     && (libro.getGenero().startsWith(genero))
                     && (!novedad || (novedad && libro.isNovedad()))
-                    && (!leido || (leido && userHasRead))) {
+                    /*&& (!leido || (leido && libro.isRead))*/) {
                 indiceFiltro.add(i);
             }
         }
-
-
     }
 
 
@@ -89,14 +85,6 @@ public class AdaptadorLibrosFiltroUi extends AdaptadorLibrosUI implements Observ
 
     public Libro getItemById(int id) {
         return super.getItem(id);
-    }
-
-    public String getItemKey(int posicion) {
-        if (librosUltimoFiltro != super.getItemCount()) {
-            recalculaFiltro();
-        }
-        int id = indiceFiltro.elementAt(posicion);
-        return super.getItemKey(id);
     }
 
 

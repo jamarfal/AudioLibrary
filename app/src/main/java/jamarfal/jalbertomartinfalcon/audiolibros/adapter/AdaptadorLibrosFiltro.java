@@ -104,4 +104,12 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
         setBusqueda((String) data);
         notifyDataSetChanged();
     }
+
+    public String getItemKey(int posicion) {
+        if (librosUltimoFiltro != super.getItemCount()) {
+            recalculaFiltro();
+        }
+        int id = indiceFiltro.elementAt(posicion);
+        return super.getItemKey(id);
+    }
 }
