@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -71,6 +72,7 @@ public class CustomLoginActivity extends FragmentActivity
     private static final int RC_GOOGLE_SIGN_IN = 123;
     private GoogleApiClient googleApiClient;
     private CallbackManager callbackManager;
+    private Button buttonToLogin;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +81,30 @@ public class CustomLoginActivity extends FragmentActivity
         FacebookSdk.sdkInitialize(this);
 
         setContentView(R.layout.activity_custom_login);
+
+        initializeWidgets();
+
+        initializeAuth();
+
+        doLogin();
+
+        //Facebook
+        initFacebookAuth();
+
+        //Google
+        initGoogleAuth();
+
+        //Twitter
+        initTwitterAuth();
+    }
+
+    private void initializeAuth() {
+        auth = ((AudioLibraryApplication) getApplicationContext()).getAuth();
+    }
+
+    private void initializeWidgets() {
+        buttonToLogin = (Button) findViewById(R.id.buttonToLogin);
         btnGoogle = (SignInButton) findViewById(R.id.btnGoogle);
-//        btnTwitter = (TwitterLoginButton) findViewById(R.id.twitter_button);
         btnGoogle.setOnClickListener(this);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         inputEmail = (EditText) findViewById(R.id.editTxtEmail);
@@ -91,21 +115,6 @@ public class CustomLoginActivity extends FragmentActivity
         container = (RelativeLayout) findViewById(R.id.loginContainer);
         layoutSocialButtons = (LinearLayout) findViewById(R.id.layoutSocial);
         layoutEmailButtons = (LinearLayout) findViewById(R.id.layoutEmailButtons);
-        auth = ((AudioLibraryApplication) getApplicationContext()).getAuth();
-
-//        btnTwitter.setEnabled(true);
-
-        doLogin();
-
-
-        //Facebook
-        initFacebookAuth();
-
-        //Google
-        initGoogleAuth();
-
-        //Twitter
-        initTwitterAuth();
     }
 
     private void initTwitterAuth() {
@@ -332,6 +341,7 @@ public class CustomLoginActivity extends FragmentActivity
         layoutEmailButtons.setVisibility(View.GONE);
         wrapperPassword.setVisibility(View.GONE);
         wrapperEmail.setVisibility(View.GONE);
+        buttonToLogin.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -340,6 +350,7 @@ public class CustomLoginActivity extends FragmentActivity
         layoutEmailButtons.setVisibility(View.VISIBLE);
         wrapperPassword.setVisibility(View.VISIBLE);
         wrapperEmail.setVisibility(View.VISIBLE);
+        buttonToLogin.setText(View.GONE);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -410,28 +421,6 @@ public class CustomLoginActivity extends FragmentActivity
         showSnackbar(getString(R.string.error_connection_failed));
     }
 
-    //    void guardarUsuario(final FirebaseUser user) {
-//        DatabaseReference usersReference = ((AudioLibraryApplication) getApplicationContext())
-//                .getUsersReference();
-//
-//        final DatabaseReference currentUserReference = usersReference.child(user.getUid());
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (!dataSnapshot.exists()) {
-//                    currentUserReference.setValue(new User(
-//                            user.getDisplayName(), user.getEmail()));
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        };
-//        currentUserReference.addListenerForSingleValueEvent(userListener);
-//    }
 
     void guardarUsuario(final FirebaseUser user) {
         AudioLibraryApplication audioLibraryApplication = ((AudioLibraryApplication) getApplicationContext());

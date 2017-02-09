@@ -89,10 +89,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         createFragment();
 
 
-
-
-
-
     }
 
     private void initializeNavigationDrawer(Toolbar toolbar) {
@@ -329,31 +325,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(Intent.createChooser(i, "Compartir"));
                         break;
                     case 1: // Borrar
-                        Snackbar.make(v, "¿Estás seguro?", Snackbar.LENGTH_LONG)
-                                .setAction("SI", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        //Otra forma de animar
+                        Libro bookToRemove = BooksSingleton.getInstance(MainActivity.this).getAdapter().getItemById(id);
+
+                        if (bookToRemove.getCreatedBy().equalsIgnoreCase(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                            Snackbar.make(v, "¿Estás seguro?", Snackbar.LENGTH_LONG)
+                                    .setAction("SI", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            //Otra forma de animar
 //                                                Animation anim = AnimationUtils.loadAnimation(actividad,
 //                                                        R.anim.menguar);
 //                                                anim.setAnimationListener(SelectorFragment.this);
 //                                                v.startAnimation(anim);
 //                                                adaptador.borrar(id);
-                                        //adaptador.notifyDataSetChanged();
+                                            //adaptador.notifyDataSetChanged();
 
-                                        Animator anim = AnimatorInflater.loadAnimator(MainActivity.this,
-                                                R.animator.menguar);
-                                        anim.addListener(MainActivity.this);
-                                        anim.setTarget(v);
-                                        anim.start();
-                                        adaptador.borrar(id);
-                                    }
-                                }).show();
+                                            Animator anim = AnimatorInflater.loadAnimator(MainActivity.this,
+                                                    R.animator.menguar);
+                                            anim.addListener(MainActivity.this);
+                                            anim.setTarget(v);
+                                            anim.start();
+                                            adaptador.borrar(id);
+                                        }
+                                    }).show();
+                        } else {
+                            Snackbar.make(v, "Solamente el usuario que creó el libro puede borrarlo", Snackbar.LENGTH_LONG).show();
+                        }
+
+
                         break;
 
                     case 2: //Insertar
                         int posicion = recyclerView.getChildLayoutPosition(v);
-                        adaptador.insertar((Libro) adaptador.getItem(posicion));
+                        FirebaseUser usuario = FirebaseAuth.getInstance().getCurrentUser();
+                        adaptador.insertar((Libro) adaptador.getItem(posicion), usuario);
                         adaptador.notifyItemInserted(adaptador.getItemCount() + 1);
                         Snackbar.make(v, "Libro insertado", Snackbar.LENGTH_INDEFINITE)
                                 .setAction("OK", new View.OnClickListener() {

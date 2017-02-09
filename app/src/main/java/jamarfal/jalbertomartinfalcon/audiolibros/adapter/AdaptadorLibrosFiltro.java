@@ -2,6 +2,7 @@ package jamarfal.jalbertomartinfalcon.audiolibros.adapter;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.Observable;
@@ -96,9 +97,12 @@ public class AdaptadorLibrosFiltro extends AdaptadorLibros implements Observer {
         recalculaFiltro();
     }
 
-    public void insertar(Libro libro) {
+    public void insertar(Libro libro, FirebaseUser user) {
+        libro.setNovedad(true);
+        libro.setCreatedBy(user.getUid());
         booksReference.push().setValue(libro);
         recalculaFiltro();
+
     }
 
     @Override

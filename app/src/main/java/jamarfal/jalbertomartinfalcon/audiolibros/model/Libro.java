@@ -18,6 +18,7 @@ public class Libro {
     private String genero; // Género literario
     private boolean novedad; // Es una novedad
     private Map<String, Boolean> leido;
+    private String createdBy;
     private int colorVibrante, colorApagado;
 
     private final static String FILTER_ALL = "Todos los géneros";
@@ -28,22 +29,31 @@ public class Libro {
             FILTER_S_XIX, FILTER_THRILLER};
 
 
-    public final static Libro EMPTY_BOOK = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg", "", FILTER_ALL, false);
+    public final static Libro EMPTY_BOOK = new Libro("", "anónimo", "http://www.dcomg.upv.es/~jtomas/android/audiolibros/sin_portada.jpg", "", FILTER_ALL, false, "");
 
     private Libro(String titulo, String autor, String urlImagen,
-                  String urlAudio, String genero, boolean novedad) {
+                  String urlAudio, String genero, boolean novedad, String createdBy) {
         this.titulo = titulo;
         this.autor = autor;
         this.urlImagen = urlImagen;
         this.urlAudio = urlAudio;
         this.genero = genero;
         this.novedad = novedad;
+        this.createdBy = createdBy;
         this.leido = new HashMap<>();
         this.colorApagado = -1;
         this.colorVibrante = -1;
     }
 
     public Libro() {
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     public String getId() {
@@ -140,22 +150,22 @@ public class Libro {
         Vector<Libro> libros = new Vector<Libro>();
         libros.add(new Libro("Kappa", "Akutagawa",
                 SERVIDOR + "kappa.jpg", SERVIDOR + "kappa.mp3",
-                Libro.FILTER_S_XIX, false));
+                Libro.FILTER_S_XIX, false, ""));
         libros.add(new Libro("Avecilla", "Alas Clarín, Leopoldo",
                 SERVIDOR + "avecilla.jpg", SERVIDOR + "avecilla.mp3",
-                Libro.FILTER_S_XIX, false));
+                Libro.FILTER_S_XIX, false, ""));
         libros.add(new Libro("Divina Comedia", "Dante",
                 SERVIDOR + "divina_comedia.jpg", SERVIDOR + "divina_comedia.mp3",
-                Libro.FILTER_EPIC, false));
+                Libro.FILTER_EPIC, false, ""));
         libros.add(new Libro("Viejo Pancho, El", "Alonso y Trelles, José",
                 SERVIDOR + "viejo_pancho.jpg", SERVIDOR + "viejo_pancho.mp3",
-                Libro.FILTER_S_XIX, true));
+                Libro.FILTER_S_XIX, true, ""));
         libros.add(new Libro("Canción de Rolando", "Anónimo",
                 SERVIDOR + "cancion_rolando.jpg", SERVIDOR + "cancion_rolando.mp3",
-                Libro.FILTER_EPIC, true));
+                Libro.FILTER_EPIC, true, ""));
         libros.add(new Libro("Matrimonio de sabuesos", "Agata Christie",
-                SERVIDOR + "matrim_sabuesos.jpg", SERVIDOR + "matrim_sabuesos.mp3", Libro.FILTER_THRILLER, true));
-        libros.add(new Libro("La iliada", "Homero", SERVIDOR + "la_iliada.jpg", SERVIDOR + "la_iliada.mp3", Libro.FILTER_EPIC, false));
+                SERVIDOR + "matrim_sabuesos.jpg", SERVIDOR + "matrim_sabuesos.mp3", Libro.FILTER_THRILLER, true, ""));
+        libros.add(new Libro("La iliada", "Homero", SERVIDOR + "la_iliada.jpg", SERVIDOR + "la_iliada.mp3", Libro.FILTER_EPIC, false, ""));
         return libros;
     }
 
@@ -168,6 +178,7 @@ public class Libro {
         private String audioUrl = "";
         private String genre = FILTER_ALL;
         private boolean isNew = true;
+        private String createdBy = "";
         private Map<String, Boolean> readedBooks;
 
         public LibroBuilder withTitle(String titulo) {
@@ -212,7 +223,7 @@ public class Libro {
                     imageUrl,
                     audioUrl,
                     genre,
-                    isNew);
+                    isNew, createdBy);
         }
     }
 }
