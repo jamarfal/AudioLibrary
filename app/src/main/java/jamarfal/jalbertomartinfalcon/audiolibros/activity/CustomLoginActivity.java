@@ -1,4 +1,4 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +49,9 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import io.fabric.sdk.android.Fabric;
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.LibroSharedPreferenceStorage;
+import jamarfal.jalbertomartinfalcon.audiolibros.R;
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.User;
 import jamarfal.jalbertomartinfalcon.audiolibros.application.AudioLibraryApplication;
 
 public class CustomLoginActivity extends FragmentActivity

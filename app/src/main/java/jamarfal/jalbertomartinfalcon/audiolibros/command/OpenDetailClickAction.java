@@ -1,6 +1,6 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.command;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
+import jamarfal.jalbertomartinfalcon.audiolibros.activity.MainActivity;
 
 /**
  * Created by jamarfal on 12/1/17.

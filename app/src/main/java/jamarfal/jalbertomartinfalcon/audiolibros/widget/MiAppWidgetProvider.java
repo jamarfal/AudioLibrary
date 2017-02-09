@@ -11,8 +11,8 @@ import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
-import jamarfal.jalbertomartinfalcon.audiolibros.LibroSharedPreferenceStorage;
-import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.LibroSharedPreferenceStorage;
+import jamarfal.jalbertomartinfalcon.audiolibros.activity.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.singleton.BooksSingleton;
 

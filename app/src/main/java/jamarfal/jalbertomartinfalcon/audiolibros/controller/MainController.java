@@ -1,6 +1,6 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.controller;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.LibroStorage;
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.LibroStorage;
 
 /**
  * Created by jamarfal on 31/1/17.

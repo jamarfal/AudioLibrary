@@ -3,7 +3,7 @@ package jamarfal.jalbertomartinfalcon.audiolibros.command;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
+import jamarfal.jalbertomartinfalcon.audiolibros.activity.MainActivity;
 
 /**
  * Created by jamarfal on 12/1/17.

@@ -1,12 +1,14 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.activity;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+
+import jamarfal.jalbertomartinfalcon.audiolibros.R;
 
 public class WelcomeSplashActivity extends AppCompatActivity {
 
@@ -20,6 +22,12 @@ public class WelcomeSplashActivity extends AppCompatActivity {
 
         splashLabel = (TextView) findViewById(R.id.splash_label);
 
+        Animation anim = configAnimation();
+
+        splashLabel.startAnimation(anim);
+    }
+    
+    private Animation configAnimation() {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.loop_rotation);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -46,24 +54,6 @@ public class WelcomeSplashActivity extends AppCompatActivity {
 
             }
         });
-
-        splashLabel.startAnimation(anim);
-
-
-//        new Handler().postDelayed(new Runnable() {
-//            public void run() {
-//
-//                Intent mainIntent = new Intent(WelcomeSplashActivity.this,
-//                        MainActivity.class);
-//
-//
-//                startActivity(mainIntent);
-//                     /* Finish splash activity so user cant go back to it. */
-//                WelcomeSplashActivity.this.finish();
-//
-//
-//                overridePendingTransition(R.anim.entrada_derecha, R.anim.salida_izquierda);
-//            }
-//        }, SPLASH_DISPLAY_TIME);
+        return anim;
     }
 }

@@ -1,6 +1,5 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.presenter;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.LibroStorage;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.SaveLastBook;

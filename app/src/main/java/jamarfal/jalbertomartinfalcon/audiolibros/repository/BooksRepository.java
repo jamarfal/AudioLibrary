@@ -1,7 +1,5 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.repository;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.LibroStorage;
-
 /**
  * Created by jamarfal on 2/2/17.
  */

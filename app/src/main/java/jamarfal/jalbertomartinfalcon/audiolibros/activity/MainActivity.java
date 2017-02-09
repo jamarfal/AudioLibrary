@@ -1,4 +1,4 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -34,6 +34,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.LibroSharedPreferenceStorage;
+import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.GetLastBook;
 import jamarfal.jalbertomartinfalcon.audiolibros.domain.HasLastBook;

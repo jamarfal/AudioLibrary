@@ -1,16 +1,14 @@
-package jamarfal.jalbertomartinfalcon.audiolibros;
+package jamarfal.jalbertomartinfalcon.audiolibros.activity;
 
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
+import jamarfal.jalbertomartinfalcon.audiolibros.repository.LibroSharedPreferenceStorage;
+import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.widget.MiAppWidgetProvider;
 
 /**

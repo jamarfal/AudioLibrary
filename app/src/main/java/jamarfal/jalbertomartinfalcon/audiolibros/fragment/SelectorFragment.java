@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
+import jamarfal.jalbertomartinfalcon.audiolibros.activity.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.SearchObservable;
 import jamarfal.jalbertomartinfalcon.audiolibros.adapter.AdaptadorLibrosFiltro;

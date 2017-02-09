@@ -18,7 +18,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.io.IOException;
 
 import jamarfal.jalbertomartinfalcon.audiolibros.model.Libro;
-import jamarfal.jalbertomartinfalcon.audiolibros.MainActivity;
+import jamarfal.jalbertomartinfalcon.audiolibros.activity.MainActivity;
 import jamarfal.jalbertomartinfalcon.audiolibros.R;
 import jamarfal.jalbertomartinfalcon.audiolibros.customviews.ZoomSeekBar;
 import jamarfal.jalbertomartinfalcon.audiolibros.presenter.DetailPresenter;

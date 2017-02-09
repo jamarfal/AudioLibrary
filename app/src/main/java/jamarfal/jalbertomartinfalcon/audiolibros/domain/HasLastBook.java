@@ -1,6 +1,5 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.domain;
 
-import jamarfal.jalbertomartinfalcon.audiolibros.LibroStorage;
 import jamarfal.jalbertomartinfalcon.audiolibros.repository.BooksRepository;
 
 /**
