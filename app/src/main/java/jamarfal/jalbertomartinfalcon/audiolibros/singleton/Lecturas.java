@@ -1,5 +1,7 @@
 package jamarfal.jalbertomartinfalcon.audiolibros.singleton;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,12 +48,14 @@ public class Lecturas implements ChildEventListener {
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        idLibros.add(dataSnapshot.getKey());
+        if (!idLibros.contains(dataSnapshot.getKey())) {
+            idLibros.add(dataSnapshot.getKey());
+        }
     }
 
     @Override
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+        Log.d("Entra", "entra");
     }
 
     @Override
@@ -78,6 +82,7 @@ public class Lecturas implements ChildEventListener {
             referenciaMisLecturas.child(key).setValue(true);
         } else {
             referenciaMisLecturas.child(key).getRef().removeValue();
+            idLibros.remove(key);
         }
     }
 }
